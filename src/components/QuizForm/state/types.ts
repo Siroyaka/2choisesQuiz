@@ -1,0 +1,5 @@
+export enum QuizActionTypes {
+  ANSWER = 'QUIZANSWER',
+  TIMEOVER = 'QUIZTIMEOVER',
+  INITIALIZE = 'QUIZINITIALIZE',
+}
