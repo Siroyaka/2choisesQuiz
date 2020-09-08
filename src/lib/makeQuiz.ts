@@ -1,4 +1,9 @@
+interface IQuizInfo {
+  showQuestion: () => string,
+  showAnswer: () => string,
+}
 
+export type QuizInfo = string;
 
 export const makeQuiz = () => {
   let choiseValues: {A: string, B: string} = {A: '', B: ''};

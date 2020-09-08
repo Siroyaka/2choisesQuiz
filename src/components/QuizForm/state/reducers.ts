@@ -2,13 +2,7 @@ import React from 'react';
 
 import { QuizActionTypes } from './types';
 import { ActionResultTypes } from './actions';
-
-import { makeAddQuiz } from 'lib/makeQuiz';
-
-interface QuizInfo {
-  showQuestion: () => string,
-  showAnswer: () => string,
-}
+import { QuizInfo } from 'lib/makeQuiz';
 
 const quizMaxNum = 5;
 
@@ -16,13 +10,13 @@ export interface OwnState {
   isFinished: boolean,
   isInterval: boolean,
   quizResult: boolean[],
-  quizInfo: string[],
+  quizInfo: QuizInfo[],
   viewingQuiz: string,
   collectValue: 'A' | 'B' | 'N',
   choiseValues: {A: string, B: string},
 }
 
-const initialState: OwnState = {
+const setInitialState = (): OwnState  => ({
   isFinished: false,
   isInterval: true,
   quizResult: [],
@@ -30,7 +24,7 @@ const initialState: OwnState = {
   viewingQuiz: '',
   collectValue: 'N',
   choiseValues: {A: '', B: ''}
-}
+})
 
 type State = OwnState;
 
@@ -48,15 +42,13 @@ const reducer: React.Reducer<State, ActionResultTypes> = (state, action) => {
       return newState;
     }
     case QuizActionTypes.INITIALIZE: {
-      return initialState;
+      return setInitialState();
     }
     case QuizActionTypes.NEXTQUESTION: {
       const newState = {...state};
-      console.log('next question');
 
       // クイズの最終問題を終えている場合フラグをたてて終わり
       if(newState.quizResult.length >= quizMaxNum) {
-        newState.isInterval = false;
         newState.isFinished = true;
         return newState;
       }
@@ -65,7 +57,9 @@ const reducer: React.Reducer<State, ActionResultTypes> = (state, action) => {
       newState.collectValue = action.answer;
       newState.choiseValues = action.choises;
       newState.viewingQuiz = action.question;
-      newState.quizInfo.push(action.question);
+      const collectValue = action.answer === 'A' ? action.choises.A : action.choises.B;
+      const info = action.question.replace('?', collectValue);
+      newState.quizInfo.push(info);
       newState.isInterval = false;
 
       return newState;

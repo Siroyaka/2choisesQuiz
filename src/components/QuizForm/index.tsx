@@ -2,10 +2,10 @@ import React from 'react';
 
 import { quizReducer, QuizState, QuizActionTypes } from './state';
 import QuestionWindow from './standalone/QuestionWindow';
-import { makeAddQuiz, makeMulQuiz, make1MulQuiz } from 'lib/makeQuiz';
+import { makeAddQuiz, makeMulQuiz, make1MulQuiz, QuizInfo } from 'lib/makeQuiz';
 
 interface OwnProps {
-  onFinished: (result: boolean[], info: string[]) => void
+  onFinished: (result: boolean[], info: QuizInfo[]) => void
 }
 
 type Props = OwnProps;
@@ -24,9 +24,10 @@ const QuizForm: React.FC<Props> = (props) => {
   const {
     onFinished
   } = props;
-  const [state, dispatch] = React.useReducer(quizReducer, initialState);
+  const [state, dispatch] = React.useReducer(quizReducer, {...initialState});
   const [deadLine, setDeadLine] = React.useState(5);
   const timerIdRef = React.useRef<any>();
+  console.log('aaaaaaaa');
 
   React.useEffect(() => {
     if(!state.isInterval) return;
@@ -41,14 +42,18 @@ const QuizForm: React.FC<Props> = (props) => {
         }),
         1000
     )
-  }, [state.isInterval]);
+  }, [state.isInterval, dispatch]);
 
   React.useEffect(() => {
+    console.log(state);
     if(state.isFinished) {
+      console.log('finished');
       onFinished(state.quizResult, state.quizInfo);
       return;
     }
-    // initialize
+    dispatch({
+      type: QuizActionTypes.INITIALIZE
+    });
     return;
   }, [state.isFinished])
 

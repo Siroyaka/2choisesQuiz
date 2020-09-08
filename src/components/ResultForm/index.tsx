@@ -1,16 +1,32 @@
 import React from 'react';
 
-interface OwnProps {
+import { ResultFormState } from './state';
 
+interface OwnProps {
 
 }
 
-type Props = OwnProps;
+type Props = ResultFormState & OwnProps;
 
 const ResultForm: React.FC<Props> = (props) => {
+  const {
+    quizResult,
+    quizInfo,
+  } = props;
+  const list = [];
+  for(let i = 0; i < quizResult.length; i++) {
+    const marubatu = quizResult[i] ? '〇' : '×';
+    list.push(marubatu + ' ' + quizInfo[i]);
+  }
   return(
     <div>
-      おわり
+      <ul>
+        {list.map((v, i) => 
+          <li key={`resultValue-${i}`}>
+            {v}
+          </li>
+        )}
+      </ul>
     </div>
   )
 }

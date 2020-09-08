@@ -1,0 +1,4 @@
+export enum QuizResultTypes {
+  VIEWRESULT = 'VIEWRESULT',
+  INITIALIZE = 'RESULTINITIALIZE'
+}
