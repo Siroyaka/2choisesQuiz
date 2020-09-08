@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 
 interface OwnProps {
   text: string,
+  interval?: number,
   onFinished?: () => void,
 }
 
@@ -10,12 +11,14 @@ type Props = OwnProps;
 const QuestionWindow: React.FC<Props> = (props) => {
   const {
     text,
+    interval,
     onFinished,
   } = props;
 
   let count = 0;
   const [shownTexts, setShownTexts] = React.useState('');
   let timerId;
+  const textViewingInterval = interval === undefined ? 200 : interval;
 
   const display = () => {
     setShownTexts(text.substr(0, count + 1));
@@ -24,7 +27,7 @@ const QuestionWindow: React.FC<Props> = (props) => {
       onFinished && onFinished();
       return;
     }
-    timerId = setTimeout(display, 200);
+    timerId = setTimeout(display, textViewingInterval);
   }
 
   useEffect(() => {

@@ -25,3 +25,7 @@ export const makeQuiz = () => {
     answer,
   }
 }
+
+const makeAddQuiz = () => {
+  
+}
