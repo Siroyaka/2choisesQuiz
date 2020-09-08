@@ -12,7 +12,7 @@ export const makeQuiz = () => {
   if(i === 1) {
     choiseValues = {A: answerValue, B: wrongValue};
     answer = 'A';
-    quiz = 'Aが正解の問題です';
+    quiz = 'Aが正解の問題です。';
   } else {
     choiseValues = {B: answerValue, A: wrongValue};
     answer = 'B';

@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { quizReducer, QuizState, QuizActionTypes } from './state'
+import { quizReducer, QuizState, QuizActionTypes } from './state';
+import QuestionWindow from './standalone/QuestionWindow';
 
 interface OwnProps {
 
@@ -32,7 +33,6 @@ const QuizForm: React.FC<Props> = (props) => {
       choises: value
     });
   }
-  console.log(state.answerResult);
 
   return(
     <div className='h-full flex flex-wrap'>
@@ -40,8 +40,8 @@ const QuizForm: React.FC<Props> = (props) => {
       </div>
       <div className='w-full lg:w-3/5 h-full bg-red-200'>
         <div id='question-display' className='flex flex-row mt-4 mx-3 border border-black rounded-full items-center justify-center bg-white'>
-          <div className='my-12 text-4xl'>
-            {state.viewingQuiz}
+          <div className='my-12 text-4xl mx-4'>
+            <QuestionWindow key={state.answerResult.length + '-question'} text={state.viewingQuiz} />
           </div>
         </div>
         <div id='answer-buttons' className='flex flex-wrap mt-6'>
