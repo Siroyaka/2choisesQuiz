@@ -24,11 +24,17 @@ const HeadItem: React.FC<{title: string}> = (props) => {
 
 const QuizPage: React.FC<Props> = (props) => {
   const title = 'クイズ';
+  const [finished, setFinished] = React.useState(false);
   return(
     <React.Fragment>
       <HeadItem title={title}/>
       <main>
-        <QuizForm />
+        {!finished && 
+          <QuizForm onFinished={() => setFinished(true)}/>
+        }
+        {finished &&
+          <ResultForm />
+        }
       </main>
     </React.Fragment>
   )
