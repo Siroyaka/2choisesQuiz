@@ -27,7 +27,6 @@ const QuizForm: React.FC<Props> = (props) => {
   const [state, dispatch] = React.useReducer(quizReducer, {...initialState});
   const [deadLine, setDeadLine] = React.useState(5);
   const timerIdRef = React.useRef<any>();
-  console.log('aaaaaaaa');
 
   React.useEffect(() => {
     if(!state.isInterval) return;
@@ -45,9 +44,7 @@ const QuizForm: React.FC<Props> = (props) => {
   }, [state.isInterval, dispatch]);
 
   React.useEffect(() => {
-    console.log(state);
     if(state.isFinished) {
-      console.log('finished');
       onFinished(state.quizResult, state.quizInfo);
       return;
     }
