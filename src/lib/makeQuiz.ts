@@ -65,9 +65,56 @@ export const makeMulQuiz = (digits: number) => {
   }
   const valueA = Math.round(Math.random() * maxValue);
   const valueB = Math.round(Math.random() * maxValue);
-  const quiz = valueA + '×' + valueB + '=?';
+  const quiz = valueA + ' × ' + valueB + ' = ?';
   const answerValue = valueA * valueB;
   const addValue = Math.round(Math.random() * 20) * Math.pow(10, digits - 2);
   const wrongValue = answerValue + (addValue === 10 ? addValue - 10 : 11);
   return randomAorB(quiz, answerValue + '', wrongValue + '')
+}
+
+export const make1MulQuiz = () => {
+  let maxValue = 8;
+  const valueA = Math.round(Math.random() * maxValue) + 1;
+  const valueB = Math.round(Math.random() * maxValue) + 1;
+  const quiz = valueA + ' × ' + valueB + ' = ?';
+  const answerValue = valueA * valueB;
+  const randomNum = Math.round(Math.random() * 6);
+  let wrongValue = '';
+  switch(randomNum) {
+    case 0: {
+      wrongValue = (answerValue + 1) + ''
+      break;
+    }
+    case 1: {
+      if(answerValue < 10) {
+        wrongValue = (answerValue + 2) + '';
+        break;
+      }
+      const a = Math.floor(answerValue / 10);
+      const b = answerValue - a * 10;
+      wrongValue = (a + (b * 10)) + ''
+      break;
+    }
+    case 2: {
+      wrongValue = (answerValue + valueB) + ''
+      break;
+    }
+    case 3: {
+      wrongValue = (answerValue - valueB) + ''
+      break;
+    }
+    case 4: {
+      wrongValue = (answerValue + valueA) + ''
+      break;
+    }
+    case 5: {
+      wrongValue = (answerValue - valueA) + ''
+      break;
+    }
+    case 6: {
+      wrongValue = (answerValue - 1) + ''
+      break;
+    }
+  }
+  return randomAorB(quiz, answerValue + '', wrongValue)
 }

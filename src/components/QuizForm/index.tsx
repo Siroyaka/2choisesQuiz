@@ -2,7 +2,7 @@ import React from 'react';
 
 import { quizReducer, QuizState, QuizActionTypes } from './state';
 import QuestionWindow from './standalone/QuestionWindow';
-import { makeAddQuiz, makeMulQuiz } from 'lib/makeQuiz';
+import { makeAddQuiz, makeMulQuiz, make1MulQuiz } from 'lib/makeQuiz';
 
 interface OwnProps {
   onFinished: (result: boolean[], info: string[]) => void
@@ -30,7 +30,7 @@ const QuizForm: React.FC<Props> = (props) => {
 
   React.useEffect(() => {
     if(!state.isInterval) return;
-    const question = makeMulQuiz(3);
+    const question = make1MulQuiz();
     setTimeout(
       () => 
         dispatch({
