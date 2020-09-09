@@ -5,9 +5,9 @@ import Link from 'next/link';
 const Home: React.FC = () => {
   return (
     <div className='my-2 mx-4'>
-      <Link href='/quiz'>
+      <Link href='/speed_mul100'>
         <button className='p-4 border hover:bg-blue-300 bg-blue-400 rounded-full'>
-          1桁掛け算
+          掛け算超速100問
         </button>
       </Link>
     </div>

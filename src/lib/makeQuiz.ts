@@ -5,6 +5,8 @@ interface IQuizInfo {
 
 export type QuizInfo = string;
 
+export type QuizState = ReturnType<typeof makeQuiz>;
+
 export const makeQuiz = () => {
   let choiseValues: {A: string, B: string} = {A: '', B: ''};
   let quiz = '';
@@ -21,7 +23,7 @@ export const makeQuiz = () => {
   } else {
     choiseValues = {B: answerValue, A: wrongValue};
     answer = 'B';
-    quiz = 'Bが正解の問題です';
+    quiz = 'Bが正解の問題です。';
   }
 
   return{

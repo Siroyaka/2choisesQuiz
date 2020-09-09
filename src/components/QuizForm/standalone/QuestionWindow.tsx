@@ -38,8 +38,17 @@ const QuestionWindow: React.FC<Props> = (props) => {
     }
   }, [text]);
 
+  const textSize = () => {
+    if(text.length < 3) return 'text-5xl';
+    if(text.length < 7) return 'text-4xl';
+    if(text.length < 11) return 'text-3xl';
+    if(text.length < 14) return 'text-2xl';
+    if(text.length < 17) return 'text-xl';
+    return 'text-lg'
+  }
+
   return(
-    <div className='text-center'>
+    <div className={`${textSize()}`}>
       {shownTexts}
     </div>
   )
