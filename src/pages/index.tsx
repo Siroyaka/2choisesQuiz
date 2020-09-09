@@ -4,10 +4,10 @@ import Link from 'next/link';
 
 const Home: React.FC = () => {
   return (
-    <div>
+    <div className='my-2 mx-4'>
       <Link href='/quiz'>
-        <button>
-          クイズ
+        <button className='p-4 border hover:bg-blue-300 bg-blue-400 rounded-full'>
+          1桁掛け算
         </button>
       </Link>
     </div>

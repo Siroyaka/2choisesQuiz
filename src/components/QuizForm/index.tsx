@@ -26,10 +26,12 @@ const QuizForm: React.FC<Props> = (props) => {
   } = props;
   const [state, dispatch] = React.useReducer(quizReducer, {...initialState});
   const [deadLine, setDeadLine] = React.useState(5);
+  const [viewChoises, setViewChoises] = React.useState(false);
   const timerIdRef = React.useRef<any>();
 
   React.useEffect(() => {
     if(!state.isInterval) return;
+    setViewChoises(false);
     const question = make1MulQuiz();
     setTimeout(
       () => 
@@ -54,7 +56,7 @@ const QuizForm: React.FC<Props> = (props) => {
     return;
   }, [state.isFinished])
 
-  const timer5Sec = (n: number) => {
+  const deadLineTimer = (n: number) => {
     setDeadLine(n);
     if(n <= 0) {
       dispatch({
@@ -64,7 +66,7 @@ const QuizForm: React.FC<Props> = (props) => {
       return;
     }
     timerIdRef.current = setTimeout(
-      () => timer5Sec(n - 1),
+      () => deadLineTimer(n - 1),
       1000
     );
   }
@@ -78,8 +80,9 @@ const QuizForm: React.FC<Props> = (props) => {
   }
 
   const onShownQuestion = React.useCallback(() => {
+    setViewChoises(true);
     clearTimeout(timerIdRef.current);
-    timer5Sec(5);
+    deadLineTimer(5);
   }, []);
 
   return(
@@ -106,7 +109,7 @@ const QuizForm: React.FC<Props> = (props) => {
               className='rounded-full quiz-button w-full bg-blue-400 focus:outline-none border border-black'
               onClick={() => pushAnswer('A')}
             >
-              {!state.isInterval && state.choiseValues.A}
+              {!state.isInterval && viewChoises && state.choiseValues.A}
               {state.isInterval && ('A' === state.collectValue ? '〇' : '×') }
             </button>
           </div>
@@ -115,7 +118,7 @@ const QuizForm: React.FC<Props> = (props) => {
               className='rounded-full quiz-button w-full bg-blue-400 focus:outline-none border border-black'
               onClick={() => pushAnswer('B')}
             >
-              {!state.isInterval && state.choiseValues.B}
+              {!state.isInterval && viewChoises && state.choiseValues.B}
               {state.isInterval && ('B' === state.collectValue ? '〇' : '×') }
             </button>
           </div>
