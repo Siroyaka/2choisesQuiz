@@ -23,15 +23,17 @@ const HeadItem: React.FC<{title: string}> = (props) => {
 }
 
 const QuizPage: React.FC<Props> = (props) => {
-  const title = '掛け算超速100問';
+  const title = '超速2択掛け算100問';
   return(
     <React.Fragment>
       <HeadItem title={title}/>
       <main>
         <QuizTemplate
+          title={title}
+          hashTag={title}
           quiz={make1MulQuiz}
           captionSpeed={10}
-          waitSec={1}
+          waitSec={2}
           quizLength={100}
           countdownSpeed={500}
           startCountdown={5}

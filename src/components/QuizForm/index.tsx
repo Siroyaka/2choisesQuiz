@@ -51,7 +51,7 @@ const QuizForm: React.FC<Props> = (props) => {
     if(!state.isAnswered) return;
     if(state.answeredCount >= quizLength) {
       console.log('finished');
-      setTimeout(
+      timerIdRef.current = setTimeout(
         () => onFinished(state.quizResult, state.quizInfo),
         questionInterval ?? 1000
       )
@@ -59,7 +59,7 @@ const QuizForm: React.FC<Props> = (props) => {
     }
     setViewChoises(false);
     const question = quiz();
-    setTimeout(
+    timerIdRef.current = setTimeout(
       () => 
         dispatch({
           type: QuizActionTypes.NEXTQUESTION,
@@ -73,6 +73,9 @@ const QuizForm: React.FC<Props> = (props) => {
 
   useEffect(() => {
     startTimer(startCountdown ?? 3);
+    return() => {
+      clearTimeout(timerIdRef.current);
+    }
   }, [])
 
   const startTimer = (n: number) => {
@@ -109,6 +112,9 @@ const QuizForm: React.FC<Props> = (props) => {
   }
 
   const pushAnswer = (value: 'A' | 'B') => {
+    if(state.isInitialize) return;
+    if(state.isAnswered) return;
+    if(!viewChoises) return;
     clearTimeout(timerIdRef.current);
     dispatch({
       type: QuizActionTypes.ANSWER,
@@ -125,23 +131,27 @@ const QuizForm: React.FC<Props> = (props) => {
   return(
     <div className='h-full flex flex-wrap'>
       <div className='hidden lg:block w-1/5 h-full bg-blue-200'>
-        {deadLine}
       </div>
       <div className='w-full lg:w-3/5 h-full bg-red-200'>
-        <div id='question-display' className='flex flex-row mt-4 mx-3 border border-black rounded-full items-center justify-center bg-white'>
-          <div className='my-12 text-4xl mx-4'>
-            {state.isSetQuiz && !state.isInitialize &&
-              <QuestionWindow
-                key={state.quizResult.length + '-question'}
-                text={state.viewingQuiz}
-                interval={captionSpeed ?? 100}
-                onFinished={onShownQuestion}
-              />
-            }
-          </div>
+        <div id='question-display' className='mt-4 mx-3 border border-black rounded-lg bg-white relative' style={{minHeight: '9rem'}}>
+          {state.isSetQuiz && !state.isInitialize &&
+          <React.Fragment>
+            <div className='mt-6 text-3xl mx-4 flex flex-row justify-center'>
+                <QuestionWindow
+                  key={state.quizResult.length + '-question'}
+                  text={state.viewingQuiz}
+                  interval={captionSpeed ?? 100}
+                  onFinished={onShownQuestion}
+                />
+            </div>
+            <div className='absolute top-0 left-2'>
+              Q.{state.answeredCount + 1}
+            </div>
+          </React.Fragment>
+          }
         </div>
         <div id='answer-buttons' className='flex flex-wrap mt-6'>
-          <div className='w-full lg:w-1/2 px-4 py-3'>
+          <div className='w-full sm:w-1/2 px-4 py-3'>
             <button
               className='rounded-full quiz-button w-full bg-blue-400 focus:outline-none border border-black'
               onClick={() => pushAnswer('A')}
@@ -150,7 +160,7 @@ const QuizForm: React.FC<Props> = (props) => {
               {state.isAnswered && ('A' === state.collectValue ? '〇' : '×') }
             </button>
           </div>
-          <div className='w-full lg:w-1/2 px-4 py-3'>
+          <div className='w-full sm:w-1/2 px-4 py-3'>
             <button
               className='rounded-full quiz-button w-full bg-blue-400 focus:outline-none border border-black'
               onClick={() => pushAnswer('B')}

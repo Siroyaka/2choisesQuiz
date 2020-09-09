@@ -6,12 +6,18 @@ import QuizForm, {OwnProps as QuizFormProps} from 'components/QuizForm';
 import ResultForm from 'components/ResultForm';
 
 interface OwnProps {
-
+  title: string,
+  hashTag: string
 }
 
 type Props = OwnProps & Omit<QuizFormProps, 'onFinished'>;
 
 const QuizTemplate: React.FC<Props> = (props) => {
+  const {
+    title,
+    hashTag
+  } = props;
+
   const [result, dispatch] = React.useReducer(ResultFormReducers, resultFormInitialState);
   const setFinished = React.useCallback((result: boolean[], infos: QuizInfo[]) => {
     dispatch({
@@ -34,7 +40,7 @@ const QuizTemplate: React.FC<Props> = (props) => {
         />
       }
       {result.isFinished &&
-        <ResultForm {...result}/>
+        <ResultForm {...result} title={title} hashTag={hashTag}/>
       }
     </React.Fragment>
   )

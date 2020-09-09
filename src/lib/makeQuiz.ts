@@ -23,7 +23,7 @@ export const makeQuiz = () => {
   } else {
     choiseValues = {B: answerValue, A: wrongValue};
     answer = 'B';
-    quiz = 'Bが正解の問題です';
+    quiz = 'Bが正解の問題です。';
   }
 
   return{
