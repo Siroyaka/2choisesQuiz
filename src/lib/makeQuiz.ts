@@ -5,6 +5,8 @@ interface IQuizInfo {
 
 export type QuizInfo = string;
 
+export type QuizState = ReturnType<typeof makeQuiz>;
+
 export const makeQuiz = () => {
   let choiseValues: {A: string, B: string} = {A: '', B: ''};
   let quiz = '';

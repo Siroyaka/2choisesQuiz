@@ -4,11 +4,11 @@ import { QuizActionTypes } from './types';
 import { ActionResultTypes } from './actions';
 import { QuizInfo } from 'lib/makeQuiz';
 
-const quizMaxNum = 5;
-
 export interface OwnState {
-  isFinished: boolean,
-  isInterval: boolean,
+  isAnswered: boolean,
+  isSetQuiz: boolean,
+  isInitialize: boolean,
+  answeredCount: number,
   quizResult: boolean[],
   quizInfo: QuizInfo[],
   viewingQuiz: string,
@@ -17,8 +17,10 @@ export interface OwnState {
 }
 
 const setInitialState = (): OwnState  => ({
-  isFinished: false,
-  isInterval: true,
+  isAnswered: false,
+  isSetQuiz: false,
+  isInitialize: true,
+  answeredCount: 0,
   quizResult: [],
   quizInfo: [],
   viewingQuiz: '',
@@ -31,13 +33,13 @@ type State = OwnState;
 const reducer: React.Reducer<State, ActionResultTypes> = (state, action) => {
   switch (action.type) {
     case QuizActionTypes.ANSWER: {
-      if(state.isFinished) return state;
       const newState = {...state};
-      // 答えの確認
+      newState.isInitialize = false;
+      newState.isSetQuiz = false;
+      newState.isAnswered = true;
+      newState.answeredCount = newState.answeredCount + 1;
       const quizResult = state.collectValue === action.choises;
       newState.quizResult.push(quizResult);
-
-      newState.isInterval = true;
 
       return newState;
     }
@@ -47,12 +49,6 @@ const reducer: React.Reducer<State, ActionResultTypes> = (state, action) => {
     case QuizActionTypes.NEXTQUESTION: {
       const newState = {...state};
 
-      // クイズの最終問題を終えている場合フラグをたてて終わり
-      if(newState.quizResult.length >= quizMaxNum) {
-        newState.isFinished = true;
-        return newState;
-      }
-
       // 問題の設定
       newState.collectValue = action.answer;
       newState.choiseValues = action.choises;
@@ -60,7 +56,9 @@ const reducer: React.Reducer<State, ActionResultTypes> = (state, action) => {
       const collectValue = action.answer === 'A' ? action.choises.A : action.choises.B;
       const info = action.question.replace('?', collectValue);
       newState.quizInfo.push(info);
-      newState.isInterval = false;
+      newState.isInitialize = false;
+      newState.isAnswered = false;
+      newState.isSetQuiz = true;
 
       return newState;
     }

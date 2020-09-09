@@ -10,6 +10,11 @@ const Home: React.FC = () => {
           1桁掛け算
         </button>
       </Link>
+      <Link href='/speed_mul100'>
+        <button className='p-4 border hover:bg-blue-300 bg-blue-400 rounded-full'>
+          掛け算超速100問
+        </button>
+      </Link>
     </div>
   )
 }

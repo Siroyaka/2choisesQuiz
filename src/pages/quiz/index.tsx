@@ -3,7 +3,7 @@ import React from 'react';
 import Head from 'next/head';
 
 import { ResultFormReducers, resultFormInitialState, QuizResultTypes } from 'components/ResultForm/state';
-import { QuizInfo } from 'lib/makeQuiz';
+import { QuizInfo, make1MulQuiz } from 'lib/makeQuiz';
 import QuizForm from 'components/QuizForm';
 import ResultForm from 'components/ResultForm';
 
@@ -44,7 +44,13 @@ const QuizPage: React.FC<Props> = (props) => {
       <HeadItem title={title}/>
       <main>
         {!result.isFinished && 
-          <QuizForm onFinished={setFinished}/>
+          <QuizForm
+            onFinished={setFinished}
+            quiz={make1MulQuiz}
+            captionSpeed={10}
+            waitSec={1}
+            quizLength={5}
+          />
         }
         {result.isFinished &&
           <ResultForm {...result}/>
