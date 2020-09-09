@@ -130,7 +130,7 @@ const QuizForm: React.FC<Props> = (props) => {
 
   return(
     <div className='h-full flex flex-wrap'>
-      <div className='hidden lg:block w-1/5 h-full bg-blue-200'>
+      <div className='hidden lg:block w-1/5 h-full'>
       </div>
       <div className='w-full lg:w-3/5 h-full bg-red-200'>
         <div id='question-display' className='mt-4 mx-3 border border-black rounded-lg bg-white relative' style={{minHeight: '9rem'}}>
@@ -153,7 +153,7 @@ const QuizForm: React.FC<Props> = (props) => {
         <div id='answer-buttons' className='flex flex-wrap mt-6'>
           <div className='w-full sm:w-1/2 px-4 py-3'>
             <button
-              className='rounded-full quiz-button w-full bg-blue-400 focus:outline-none border border-black'
+              className='rounded-full quiz-button w-full bg-blue-400 focus:outline-none border border-black active:bg-blue-300'
               onClick={() => pushAnswer('A')}
             >
               {!state.isAnswered && viewChoises && state.choiseValues.A}
@@ -162,7 +162,7 @@ const QuizForm: React.FC<Props> = (props) => {
           </div>
           <div className='w-full sm:w-1/2 px-4 py-3'>
             <button
-              className='rounded-full quiz-button w-full bg-blue-400 focus:outline-none border border-black'
+              className='rounded-full quiz-button w-full bg-blue-400 focus:outline-none border border-black active:bg-blue-300'
               onClick={() => pushAnswer('B')}
             >
               {!state.isAnswered && viewChoises && state.choiseValues.B}
@@ -171,7 +171,7 @@ const QuizForm: React.FC<Props> = (props) => {
           </div>
         </div>
       </div>
-      <div className='hidden lg:block w-1/5 h-full bg-blue-200'>
+      <div className='hidden lg:block w-1/5 h-full'>
       </div>
     </div>
   )

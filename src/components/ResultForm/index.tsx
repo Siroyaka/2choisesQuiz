@@ -54,28 +54,36 @@ const ResultForm: React.FC<Props> = (props) => {
       <Head>
         <script async src="https://platform.twitter.com/widgets.js" charSet="utf-8"></script>
       </Head>
-      <div className='flex flex-col'>
-        <div id='result'>
+      <div className='flex flex-col mx-4 items-center h-full'>
+        <div
+          id='result'
+          className='text-2xl mt-2'
+        >
           正解数...{quizResult.length}問中{collectAnswersCount}問!!!
         </div>
-        <div id='rate-message'>
+        <div
+          id='rate-message'
+          className='text-xl mt-1 mb-4'
+        >
           {message()}
         </div>
-        <div>
-          <TwitterShareButton
-            title={shareText}
-            hashtags={[hashTag]}
-            url={shareUrl}
+        <div className='flex flex-row'>
+          <div>
+            <TwitterShareButton
+              title={shareText}
+              hashtags={[hashTag]}
+              url={shareUrl}
+            >
+              <TwitterIcon round />
+            </TwitterShareButton>
+          </div>
+          <button
+            className='focus:outline-none border rounded-lg py-2 px-4 text-white bg-blue-400 ml-6'
+            onClick={reload}
           >
-            <TwitterIcon />
-          </TwitterShareButton>
+            もう一度
+          </button>
         </div>
-        <button
-          className='focus:outline-none border rounded-lg py-2 px-4 text-white bg-blue-400'
-          onClick={reload}
-        >
-          もう一度
-        </button>
       </div>
     </React.Fragment>
   )

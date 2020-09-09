@@ -27,7 +27,7 @@ const QuizPage: React.FC<Props> = (props) => {
   return(
     <React.Fragment>
       <HeadItem title={title}/>
-      <main>
+      <main className='h-full'>
         <QuizTemplate
           title={title}
           hashTag={title}
