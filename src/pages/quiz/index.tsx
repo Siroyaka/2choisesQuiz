@@ -46,7 +46,6 @@ const QuizPage: React.FC<Props> = (props) => {
           title='テストクイズ'
           hashTag='二択クイズのテスト'
           quiz={makeQuiz}
-          countdownSpeed={100}
           captionSpeed={10}
           quizLength={5}
         />

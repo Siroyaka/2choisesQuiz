@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { quizReducer, QuizState, QuizActionTypes } from './state';
 import QuestionWindow from './standalone/QuestionWindow';
 import { QuizState as QuizInfoState, QuizInfo } from 'lib/makeQuiz';
+import SoundEffect from 'lib/soundEffect';
 
 export interface OwnProps {
   onFinished: (result: boolean[], info: QuizInfo[]) => void,
@@ -13,6 +14,7 @@ export interface OwnProps {
   questionInterval?: number,
   countdownSpeed?: number,
   startCountdown?: number,
+  soundEffect?: SoundEffect,
 }
 
 type Props = OwnProps;
@@ -39,12 +41,15 @@ const QuizForm: React.FC<Props> = (props) => {
     questionInterval,
     countdownSpeed,
     startCountdown,
+    soundEffect,
   } = props;
 
   const [state, dispatch] = React.useReducer(quizReducer, {...initialState()});
-  const [deadLine, setDeadLine] = React.useState(5);
+  const [countdown, setCountdown] = React.useState(5);
   const [viewChoises, setViewChoises] = React.useState(false);
   const timerIdRef = React.useRef<any>();
+  const collectSound = React.useRef<any>();
+  const wrongSound = React.useRef<any>();
 
   // 次の問題をセットするセクション
   React.useEffect(() => {
@@ -79,7 +84,7 @@ const QuizForm: React.FC<Props> = (props) => {
   }, [])
 
   const startTimer = (n: number) => {
-    setDeadLine(n);
+    setCountdown(n);
     if(n <= 0) {
       const question = quiz();
       dispatch({
@@ -90,6 +95,9 @@ const QuizForm: React.FC<Props> = (props) => {
       });
       return;
     }
+    if(soundEffect) {
+      soundEffect.play('tick_sound');
+    }
     timerIdRef.current = setTimeout(
       () => startTimer(n - 1),
       countdownSpeed ?? 1000
@@ -97,8 +105,11 @@ const QuizForm: React.FC<Props> = (props) => {
   }
 
   const deadLineTimer = (n: number) => {
-    setDeadLine(n);
+    setCountdown(n);
     if(n <= 0) {
+      if(soundEffect) {
+        soundEffect.play('wrong_sound');
+      }
       dispatch({
         type: QuizActionTypes.ANSWER,
         choises: 'N'
@@ -116,6 +127,13 @@ const QuizForm: React.FC<Props> = (props) => {
     if(state.isAnswered) return;
     if(!viewChoises) return;
     clearTimeout(timerIdRef.current);
+    if(soundEffect) {
+      if(value === state.collectValue) {
+        soundEffect.play('collect_sound');
+      } else {
+        soundEffect.play('wrong_sound');
+      }
+    }
     dispatch({
       type: QuizActionTypes.ANSWER,
       choises: value
@@ -149,6 +167,11 @@ const QuizForm: React.FC<Props> = (props) => {
             </div>
           </React.Fragment>
           }
+          {state.isInitialize && 
+            <div className='mt-6 text-3xl mx-4 flex flex-row justify-center'>
+              {countdown}
+            </div>
+          }
         </div>
         <div id='answer-buttons' className='flex flex-wrap mt-6'>
           <div className='w-full sm:w-1/2 px-4 py-3'>
@@ -173,6 +196,12 @@ const QuizForm: React.FC<Props> = (props) => {
       </div>
       <div className='hidden lg:block w-1/5 h-full'>
       </div>
+      <audio ref={collectSound} preload='auto' >
+        <source src='asset/collect_sound.wav'/>
+      </audio>
+      <audio ref={wrongSound} preload='auto' >
+        <source src='asset/wrong_sound.wav'/>
+      </audio>
     </div>
   )
 }
