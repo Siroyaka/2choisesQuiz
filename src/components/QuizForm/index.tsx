@@ -51,8 +51,6 @@ const QuizForm: React.FC<Props> = (props) => {
   const [countdown, setCountdown] = React.useState(5);
   const [viewChoises, setViewChoises] = React.useState(false);
   const timerIdRef = React.useRef<any>();
-  const collectSound = React.useRef<any>();
-  const wrongSound = React.useRef<any>();
 
   // 次の問題をセットするセクション
   React.useEffect(() => {
