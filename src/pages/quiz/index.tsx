@@ -25,20 +25,6 @@ const HeadItem: React.FC<{title: string}> = (props) => {
 
 const QuizPage: React.FC<Props> = (props) => {
   const title = 'テストクイズ';
-  const [result, dispatch] = React.useReducer(ResultFormReducers, resultFormInitialState);
-  const setFinished = React.useCallback((result: boolean[], infos: QuizInfo[], totalLength: number) => {
-    dispatch({
-      type: QuizResultTypes.VIEWRESULT,
-      result,
-      infos,
-      totalLength
-    })
-  }, []);
-  React.useEffect(() => {
-    dispatch({
-      type: QuizResultTypes.INITIALIZE
-    })
-  }, []);
   return(
     <React.Fragment>
       <HeadItem title={title}/>
@@ -49,6 +35,8 @@ const QuizPage: React.FC<Props> = (props) => {
           quiz={makeQuiz}
           captionSpeed={10}
           quizLength={5}
+          timeLimit={10}
+          countdownSpeed={500}
         />
       </main>
     </React.Fragment>
