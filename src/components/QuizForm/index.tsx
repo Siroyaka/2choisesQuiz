@@ -9,7 +9,7 @@ export interface OwnProps {
   onFinished: (result: boolean[], info: QuizInfo[], totalLength: number) => void,
   quiz: (props: QuizProps) => QuizInfoState, // クイズを作成する関数
   quizLength: number, // クイズの数
-  waitSec?: number, // 1問あたりの制限時間
+  timeLimit?: number, // 1問あたりの制限時間
   captionSpeed?: number, // 問題の文字送りの速さ
   questionInterval?: number, // 問題を答えた後にどのくらいインターバルをあけるか
   countdownSpeed?: number, // カウントダウンのインターバルの長さ
@@ -39,7 +39,7 @@ const QuizForm: React.FC<Props> = (props) => {
     onFinished,
     quizLength,
     captionSpeed,
-    waitSec,
+    timeLimit,
     questionInterval,
     countdownSpeed,
     startCountdown,
@@ -58,7 +58,6 @@ const QuizForm: React.FC<Props> = (props) => {
   React.useEffect(() => {
     if(!state.isAnswered) return;
     if(state.answeredCount >= quizLength || (wrongStop && state.answeredCount > 0 && !state.quizResult[state.answeredCount - 1])) {
-      console.log('finished');
       timerIdRef.current = setTimeout(
         () => onFinished(state.quizResult, state.quizInfo, state.totalLength),
         questionInterval ?? 1000
@@ -147,9 +146,9 @@ const QuizForm: React.FC<Props> = (props) => {
     setViewChoises(true);
     clearTimeout(timerIdRef.current);
 
-    const wait = waitSec ?? 5;
-    if(wait < 1) return;
-    deadLineTimer(wait);
+    const limit = timeLimit ?? 5;
+    if(limit < 1) return;
+    deadLineTimer(limit);
   }, []);
 
   return(
@@ -202,12 +201,6 @@ const QuizForm: React.FC<Props> = (props) => {
       </div>
       <div className='hidden lg:block w-1/5 h-full'>
       </div>
-      <audio ref={collectSound} preload='auto' >
-        <source src='asset/collect_sound.wav'/>
-      </audio>
-      <audio ref={wrongSound} preload='auto' >
-        <source src='asset/wrong_sound.wav'/>
-      </audio>
     </div>
   )
 }
