@@ -5,4 +5,8 @@ const InitialMetaData = {
   ogImage: 'https://2taku-quiz.vercel.app/asset/images/two_choises_quiz_twitter.png'
 }
 
+export const commonHashTags = [
+  'web1week'
+]
+
 export default InitialMetaData;
