@@ -42,9 +42,9 @@ const QuizTemplate: React.FC<Props> = (props) => {
       // AudioContextのinitializeはここでやる
       // callbackでロード完了を通知する
       se.current = new SoundEffect();
-      se.current.pushSource('/asset/sounds/collect_sound.wav', 'collect_sound');
-      se.current.pushSource('/asset/sounds/wrong_sound.wav', 'wrong_sound');
-      se.current.pushSource('/asset/sounds/tick_sound.wav', 'tick_sound');
+      se.current.pushSource(`/asset/sounds/collect_sound.wav`, 'collect_sound');
+      se.current.pushSource(`/asset/sounds/wrong_sound.wav`, 'wrong_sound');
+      se.current.pushSource(`/asset/sounds/tick_sound.wav`, 'tick_sound');
       se.current.onload = () => setEndInitialize(true);
       se.current.load();
       return;
