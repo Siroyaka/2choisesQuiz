@@ -146,7 +146,10 @@ const QuizForm: React.FC<Props> = (props) => {
   const onShownQuestion = React.useCallback(() => {
     setViewChoises(true);
     clearTimeout(timerIdRef.current);
-    deadLineTimer(waitSec ?? 5);
+
+    const wait = waitSec ?? 5;
+    if(wait < 1) return;
+    deadLineTimer(wait);
   }, []);
 
   return(
