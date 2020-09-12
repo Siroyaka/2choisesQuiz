@@ -2,27 +2,29 @@ import React, { useEffect } from 'react';
 
 import { quizReducer, QuizState, QuizActionTypes } from './state';
 import QuestionWindow from './standalone/QuestionWindow';
-import { QuizState as QuizInfoState, QuizInfo } from 'lib/makeQuiz';
+import { QuizState as QuizInfoState, QuizProps, QuizInfo } from 'lib/makeQuiz';
 import SoundEffect from 'lib/soundEffect';
 
 export interface OwnProps {
-  onFinished: (result: boolean[], info: QuizInfo[]) => void,
-  quiz: () => QuizInfoState,
-  quizLength: number,
-  waitSec?: number,
-  captionSpeed?: number,
-  questionInterval?: number,
-  countdownSpeed?: number,
-  startCountdown?: number,
-  soundEffect?: SoundEffect,
+  onFinished: (result: boolean[], info: QuizInfo[], totalLength: number) => void,
+  quiz: (props: QuizProps) => QuizInfoState, // クイズを作成する関数
+  quizLength: number, // クイズの数
+  waitSec?: number, // 1問あたりの制限時間
+  captionSpeed?: number, // 問題の文字送りの速さ
+  questionInterval?: number, // 問題を答えた後にどのくらいインターバルをあけるか
+  countdownSpeed?: number, // カウントダウンのインターバルの長さ
+  startCountdown?: number, // 初めにいくつカウントダウンするか
+  soundEffect?: SoundEffect, // 音の設定
+  wrongStop?: boolean, // 間違ったら終了するか
 }
 
 type Props = OwnProps;
 
-const initialState = (): QuizState => ({
+const initialState = (quizLength: number): QuizState => ({
   isAnswered: false,
   isInitialize: true,
   isSetQuiz: false,
+  totalLength: quizLength,
   answeredCount: 0,
   quizResult: [],
   quizInfo: [],
@@ -42,9 +44,10 @@ const QuizForm: React.FC<Props> = (props) => {
     countdownSpeed,
     startCountdown,
     soundEffect,
+    wrongStop
   } = props;
 
-  const [state, dispatch] = React.useReducer(quizReducer, {...initialState()});
+  const [state, dispatch] = React.useReducer(quizReducer, {...initialState(quizLength)});
   const [countdown, setCountdown] = React.useState(5);
   const [viewChoises, setViewChoises] = React.useState(false);
   const timerIdRef = React.useRef<any>();
@@ -54,16 +57,16 @@ const QuizForm: React.FC<Props> = (props) => {
   // 次の問題をセットするセクション
   React.useEffect(() => {
     if(!state.isAnswered) return;
-    if(state.answeredCount >= quizLength) {
+    if(state.answeredCount >= quizLength || (wrongStop && state.answeredCount > 0 && !state.quizResult[state.answeredCount - 1])) {
       console.log('finished');
       timerIdRef.current = setTimeout(
-        () => onFinished(state.quizResult, state.quizInfo),
+        () => onFinished(state.quizResult, state.quizInfo, state.totalLength),
         questionInterval ?? 1000
       )
       return;
     }
     setViewChoises(false);
-    const question = quiz();
+    const question = quiz({...state});
     timerIdRef.current = setTimeout(
       () => 
         dispatch({
@@ -86,7 +89,7 @@ const QuizForm: React.FC<Props> = (props) => {
   const startTimer = (n: number) => {
     setCountdown(n);
     if(n <= 0) {
-      const question = quiz();
+      const question = quiz({...state});
       dispatch({
         type: QuizActionTypes.NEXTQUESTION,
         answer: question.answer,

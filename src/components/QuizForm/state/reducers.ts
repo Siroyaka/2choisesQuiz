@@ -8,6 +8,7 @@ export interface OwnState {
   isAnswered: boolean,
   isSetQuiz: boolean,
   isInitialize: boolean,
+  totalLength: number,
   answeredCount: number,
   quizResult: boolean[],
   quizInfo: QuizInfo[],
@@ -15,18 +16,6 @@ export interface OwnState {
   collectValue: 'A' | 'B' | 'N',
   choiseValues: {A: string, B: string},
 }
-
-const setInitialState = (): OwnState  => ({
-  isAnswered: false,
-  isSetQuiz: false,
-  isInitialize: true,
-  answeredCount: 0,
-  quizResult: [],
-  quizInfo: [],
-  viewingQuiz: '',
-  collectValue: 'N',
-  choiseValues: {A: '', B: ''}
-})
 
 type State = OwnState;
 
@@ -42,9 +31,6 @@ const reducer: React.Reducer<State, ActionResultTypes> = (state, action) => {
       newState.quizResult.push(quizResult);
 
       return newState;
-    }
-    case QuizActionTypes.INITIALIZE: {
-      return setInitialState();
     }
     case QuizActionTypes.NEXTQUESTION: {
       const newState = {...state};
