@@ -3,7 +3,7 @@ import React from 'react';
 import Head from 'next/head';
 
 import { ResultFormReducers, resultFormInitialState, QuizResultTypes } from 'components/ResultForm/state';
-import { QuizInfo, make1MulQuiz, makeQuiz } from 'lib/makeQuiz';
+import { QuizInfo, makeQuiz } from 'lib/makeQuiz';
 import QuizTemplate from 'components/Template/QuizTemplate';
 
 interface OwnProps {
@@ -26,11 +26,12 @@ const HeadItem: React.FC<{title: string}> = (props) => {
 const QuizPage: React.FC<Props> = (props) => {
   const title = 'テストクイズ';
   const [result, dispatch] = React.useReducer(ResultFormReducers, resultFormInitialState);
-  const setFinished = React.useCallback((result: boolean[], infos: QuizInfo[]) => {
+  const setFinished = React.useCallback((result: boolean[], infos: QuizInfo[], totalLength: number) => {
     dispatch({
       type: QuizResultTypes.VIEWRESULT,
       result,
-      infos
+      infos,
+      totalLength
     })
   }, []);
   React.useEffect(() => {
@@ -44,7 +45,7 @@ const QuizPage: React.FC<Props> = (props) => {
       <main>
         <QuizTemplate
           title='テストクイズ'
-          hashTag='二択クイズのテスト'
+          hashTags={['テストクイズ']}
           quiz={makeQuiz}
           captionSpeed={10}
           quizLength={5}
