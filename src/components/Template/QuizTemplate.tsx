@@ -8,7 +8,7 @@ import SoundEffect from 'lib/soundEffect';
 
 interface OwnProps {
   title: string,
-  hashTag: string
+  hashTags: string[]
 }
 
 type Props = OwnProps & Omit<QuizFormProps, 'onFinished'>;
@@ -16,18 +16,19 @@ type Props = OwnProps & Omit<QuizFormProps, 'onFinished'>;
 const QuizTemplate: React.FC<Props> = (props) => {
   const {
     title,
-    hashTag
+    hashTags
   } = props;
 
   const [result, dispatch] = React.useReducer(ResultFormReducers, resultFormInitialState);
   const [endInitialize, setEndInitialize] = React.useState(false);
   const se = React.useRef<SoundEffect>();
 
-  const setFinished = React.useCallback((result: boolean[], infos: QuizInfo[]) => {
+  const setFinished = React.useCallback((result: boolean[], infos: QuizInfo[], totalLength: number) => {
     dispatch({
       type: QuizResultTypes.VIEWRESULT,
       result,
-      infos
+      infos,
+      totalLength
     })
   }, []);
   React.useEffect(() => {
@@ -80,7 +81,7 @@ const QuizTemplate: React.FC<Props> = (props) => {
         />
       }
       {result.isFinished && endInitialize &&
-        <ResultForm {...result} title={title} hashTag={hashTag}/>
+        <ResultForm {...result} title={title} hashTags={hashTags}/>
       }
     </React.Fragment>
   )

@@ -11,7 +11,7 @@ import { ResultFormState } from './state';
 
 interface OwnProps {
   title: string,
-  hashTag: string,
+  hashTags: string[],
 }
 
 type Props = ResultFormState & OwnProps;
@@ -19,9 +19,10 @@ type Props = ResultFormState & OwnProps;
 const ResultForm: React.FC<Props> = (props) => {
   const {
     title,
-    hashTag,
+    hashTags,
     quizResult,
     quizInfo,
+    totalLength
   } = props;
 
   const router = useRouter();
@@ -32,7 +33,7 @@ const ResultForm: React.FC<Props> = (props) => {
   }
 
   const collectAnswersCount = quizResult.filter((x) => x).length;
-  const collectAnswersRate = Math.floor(collectAnswersCount / quizResult.length * 100);
+  const collectAnswersRate = Math.floor(collectAnswersCount / totalLength * 100);
   const message = () => {
     if(collectAnswersRate < 20) return '頑張って!';
     if(collectAnswersRate < 40) return 'まだできる!';
@@ -46,7 +47,8 @@ const ResultForm: React.FC<Props> = (props) => {
     router.reload();
   }
 
-  const shareText = `${title}で${quizResult.length}問中${collectAnswersCount}問正解したよ！`;
+  const resultMessage = `正解数...${totalLength}問中${collectAnswersCount}問!!!`;
+  const shareText = `${title}で${totalLength}問中${collectAnswersCount}問正解したよ！`;
   const shareUrl = `https://2taku-quiz.vercel.app${router.pathname}`;
 
   return(
@@ -59,7 +61,7 @@ const ResultForm: React.FC<Props> = (props) => {
           id='result'
           className='text-2xl mt-2'
         >
-          正解数...{quizResult.length}問中{collectAnswersCount}問!!!
+          {resultMessage}
         </div>
         <div
           id='rate-message'
@@ -71,7 +73,7 @@ const ResultForm: React.FC<Props> = (props) => {
           <div>
             <TwitterShareButton
               title={shareText}
-              hashtags={[hashTag]}
+              hashtags={hashTags}
               url={shareUrl}
             >
               <TwitterIcon round />
