@@ -16,6 +16,8 @@ export interface OwnProps {
   startCountdown?: number, // 初めにいくつカウントダウンするか
   soundEffect?: SoundEffect, // 音の設定
   wrongStop?: boolean, // 間違ったら終了するか
+  collectWord?: string, // 正解したときに表示するテキスト
+  wrongWord?: string, // 間違ったときに表示するテキスト
 }
 
 type Props = OwnProps;
@@ -44,13 +46,16 @@ const QuizForm: React.FC<Props> = (props) => {
     countdownSpeed,
     startCountdown,
     soundEffect,
-    wrongStop
+    wrongStop,
+    collectWord,
+    wrongWord,
   } = props;
 
   const [state, dispatch] = React.useReducer(quizReducer, {...initialState(quizLength)});
   const [countdown, setCountdown] = React.useState(5);
   const [viewChoises, setViewChoises] = React.useState(false);
   const timerIdRef = React.useRef<any>();
+  const [answeredDisplayText, setAnsweredDisplayText] = React.useState('');
 
   // 次の問題をセットするセクション
   React.useEffect(() => {
@@ -110,6 +115,7 @@ const QuizForm: React.FC<Props> = (props) => {
       if(soundEffect) {
         soundEffect.play('wrong_sound');
       }
+      setAnsweredDisplayText(wrongWord ?? '残念！');
       dispatch({
         type: QuizActionTypes.ANSWER,
         choises: 'N'
@@ -127,12 +133,16 @@ const QuizForm: React.FC<Props> = (props) => {
     if(state.isAnswered) return;
     if(!viewChoises) return;
     clearTimeout(timerIdRef.current);
+    let se = '';
+    if(value === state.collectValue) {
+      setAnsweredDisplayText(collectWord ?? '正解！');
+      se = 'collect_sound';
+    } else {
+      setAnsweredDisplayText(wrongWord ?? '残念！');
+      se = 'wrong_sound';
+    }
     if(soundEffect) {
-      if(value === state.collectValue) {
-        soundEffect.play('collect_sound');
-      } else {
-        soundEffect.play('wrong_sound');
-      }
+      soundEffect.play(se);
     }
     dispatch({
       type: QuizActionTypes.ANSWER,
@@ -156,28 +166,33 @@ const QuizForm: React.FC<Props> = (props) => {
       <div className='w-full lg:w-3/5 h-full bg-red-200'>
         <div id='question-display' className='mt-4 mx-3 border border-black rounded-lg bg-white relative' style={{minHeight: '9rem'}}>
           {state.isSetQuiz && !state.isInitialize &&
-          <React.Fragment>
-            <div className='mt-6 text-3xl mx-4 flex flex-row justify-center'>
-                <QuestionWindow
-                  key={state.quizResult.length + '-question'}
-                  text={state.viewingQuiz}
-                  interval={captionSpeed ?? 100}
-                  onFinished={onShownQuestion}
-                />
-            </div>
-            <div className='absolute top-0' style={{left: '2px'}}>
-              Q.{state.answeredCount + 1}
-            </div>
-            {countdown > 0 && !state.isInitialize &&
-              <div className='absolute time-limit-count text-center' style={{right: '4px', bottom: '3px', animationDuration: `${(countdownSpeed ?? 1000) / 1000}s`}}>
-                {countdown}
+            <React.Fragment>
+              <div className='mt-6 text-3xl mx-4 flex flex-row justify-center'>
+                  <QuestionWindow
+                    key={state.quizResult.length + '-question'}
+                    text={state.viewingQuiz}
+                    interval={captionSpeed ?? 100}
+                    onFinished={onShownQuestion}
+                  />
               </div>
-            }
-          </React.Fragment>
+              <div className='absolute top-0' style={{left: '2px'}}>
+                Q.{state.answeredCount + 1}
+              </div>
+              {countdown > 0 && !state.isInitialize &&
+                <div className='absolute time-limit-count text-center' style={{right: '4px', bottom: '3px', animationDuration: `${(countdownSpeed ?? 1000) / 1000}s`}}>
+                  {countdown}
+                </div>
+              }
+            </React.Fragment>
           }
           {state.isInitialize && 
             <div className='mt-6 text-3xl mx-4 flex flex-row justify-center'>
               {countdown}
+            </div>
+          }
+          {!state.isInitialize && state.isAnswered &&
+            <div className='mt-6 text-3xl mx-4 flex flex-row justify-center'>
+              {answeredDisplayText}
             </div>
           }
         </div>
