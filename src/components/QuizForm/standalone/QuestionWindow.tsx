@@ -21,6 +21,11 @@ const QuestionWindow: React.FC<Props> = (props) => {
   const textViewingInterval = interval === undefined ? 200 : interval;
 
   const display = () => {
+    if(textViewingInterval < 1) {
+      setShownTexts(text);
+      onFinished && onFinished();
+      return;
+    }
     setShownTexts(text.substr(0, count + 1));
     count++;
     if(count === text.length + 1) {
