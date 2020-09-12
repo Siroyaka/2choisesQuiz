@@ -3,11 +3,19 @@ interface IQuizInfo {
   showAnswer: () => string,
 }
 
+interface OwnProps {
+  answeredCount: number,
+  quizResult: boolean[],
+  quizInfo: QuizInfo[],
+}
+
 export type QuizInfo = string;
+
+export type QuizProps = OwnProps;
 
 export type QuizState = ReturnType<typeof makeQuiz>;
 
-export const makeQuiz = () => {
+export const makeQuiz = (props: OwnProps) => {
   let choiseValues: {A: string, B: string} = {A: '', B: ''};
   let quiz = '';
   let answer: 'A' | 'B' = 'A';
@@ -51,7 +59,7 @@ const randomAorB = (quiz: string, answerValue: string, wrongValue: string) => {
   })
 }
 
-export const makeAddQuiz = (digits: number) => {
+export const makeAddQuiz = (digits: number) => (props: QuizProps) => {
   let maxValue = 0;
   for(let i = 0; i < digits; i++) {
     maxValue += (Math.pow(10, i) * 9);
@@ -65,7 +73,7 @@ export const makeAddQuiz = (digits: number) => {
   return randomAorB(quiz, answerValue + '', wrongValue + '')
 }
 
-export const makeMulQuiz = (digits: number) => {
+export const makeMulQuiz = (digits: number) => (props: QuizProps) => {
   let maxValue = 0;
   for(let i = 0; i < digits; i++) {
     maxValue += (Math.pow(10, i) * 9);
@@ -79,7 +87,7 @@ export const makeMulQuiz = (digits: number) => {
   return randomAorB(quiz, answerValue + '', wrongValue + '')
 }
 
-export const make1MulQuiz = () => {
+export const make1MulQuiz = (props: QuizProps) => {
   let maxValue = 8;
   const valueA = Math.round(Math.random() * maxValue) + 1;
   const valueB = Math.round(Math.random() * maxValue) + 1;
@@ -124,4 +132,16 @@ export const make1MulQuiz = () => {
     }
   }
   return randomAorB(quiz, answerValue + '', wrongValue)
+}
+
+const pi100 = '1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679';
+
+// 100桁まで作れる
+export const makePieQuiz = (props: QuizProps) => {
+  const resDigits = props.answeredCount;
+  const answerValue = parseInt(pi100[resDigits]);
+  const wrongAdd = Math.floor(Math.random() * 9) + 1;
+  const wrongValue = (answerValue + wrongAdd) % 10;
+  const quiz = `円周率は3.` + (resDigits > 0 ? pi100.substr(0, resDigits) : '') + '?';
+  return randomAorB(quiz, answerValue + '', wrongValue + '');
 }
