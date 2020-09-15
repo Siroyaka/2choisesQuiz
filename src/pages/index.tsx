@@ -21,7 +21,7 @@ const Home: React.FC = () => {
         {PagesData.map(x => (
           <nav key={'contents-' + x.title}>
             <Link href={x.href}>
-              <button className='p-4 border hover:bg-blue-300 bg-blue-400 rounded-full'>
+              <button className='p-4 border hover:bg-blue-300 bg-blue-400 rounded-full focus:outline-none'>
                 {x.title}
               </button>
             </Link>
