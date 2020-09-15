@@ -72,6 +72,7 @@ const ResultForm: React.FC<Props> = (props) => {
         <div className='flex flex-row'>
           <div>
             <TwitterShareButton
+              className='focus:outline-none'
               title={shareText}
               hashtags={hashTags}
               url={shareUrl}

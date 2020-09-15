@@ -6,7 +6,6 @@ const InitialMetaData = {
 }
 
 export const commonHashTags = [
-  'web1week'
 ]
 
 export default InitialMetaData;
