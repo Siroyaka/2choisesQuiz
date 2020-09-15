@@ -54,7 +54,6 @@ const ResultForm: React.FC<Props> = (props) => {
   return(
     <React.Fragment>
       <Head>
-        <script async src="https://platform.twitter.com/widgets.js" charSet="utf-8"></script>
       </Head>
       <div className='flex flex-col mx-4 items-center h-full'>
         <div
