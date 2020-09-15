@@ -1,6 +1,10 @@
-interface IQuizInfo {
-  showQuestion: () => string,
-  showAnswer: () => string,
+interface IQuizInfo<T> {
+  id: string, // 固有ID
+  choiseLength: number, // 選択肢の数
+  getQuiz: () => string, // クイズの内容を読み取る
+  getChoises: () => string[], // 選択肢の内容を読み取る
+  getExplanation: () => string, // 解説の内容を読み取る
+  getChoisesValue: () => T[] // 選んだ選択肢ごとの影響値
 }
 
 interface OwnProps {
