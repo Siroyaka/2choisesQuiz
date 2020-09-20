@@ -1,51 +1,109 @@
-interface IQuizInfo<T> {
-  id: string, // 固有ID
-  choiseLength: number, // 選択肢の数
-  getQuiz: () => string, // クイズの内容を読み取る
-  getChoises: () => string[], // 選択肢の内容を読み取る
-  getExplanation: () => string, // 解説の内容を読み取る
-  getChoisesValue: () => T[] // 選んだ選択肢ごとの影響値
+import { IQuestion, IQuestionResult } from 'lib/IQuestion';
+
+export class Auto2ChoiseQuizInfo implements IQuestion<number> {
+  id = ''
+  choiseLength = 2
+
+  private choises: string[];
+  private quiz: string;
+  private choisesValue: number[];
+  private explanation: string;
+
+  constructor(id: string, quiz: string, choise: {A: string, B: string}, collectChoise: 'A' | 'B', explanation?: string) {
+    this.id = id;
+    this.quiz = quiz;
+    this.choises = [choise.A, choise.B];
+    this.choisesValue = collectChoise === 'A' ? [1, 0] : [0, 1];
+    this.explanation = explanation ?? '';
+  }
+
+  getQuestion() {
+    return this.quiz;
+  }
+  getChoises() {
+    return this.choises;
+  }
+  getExplanation() {
+    return this.explanation;
+  }
+  getChoisesValue() {
+    return this.choisesValue;
+  }
+  getFailureValue() {
+    return 0;
+  }
 }
 
-interface OwnProps {
-  answeredCount: number,
-  quizResult: boolean[],
-  quizInfo: QuizInfo[],
+export type Choise2Result = {
+  total: number,
+  collect: number,
+  allChoises: number[],
+  hasWrongValue: boolean,
 }
 
-export type QuizInfo = string;
+export class Auto2ChoiseQuizResult implements IQuestionResult<number, Choise2Result> {
+  private total: number;
+  private collect: number;
+  private results: number[];
+  private hasWrongValue: boolean;
+  answeredCount: number;
 
-export type QuizProps = OwnProps;
+  constructor(total: number) {
+    this.total = total;
+    this.results = [];
+    this.collect = 0;
+    this.hasWrongValue = false;
+    this.answeredCount = 0;
+  }
 
-export type QuizState = ReturnType<typeof makeQuiz>;
+  appendChoiseValue(choiseValue: number, choise: number) {
+    this.answeredCount += 1;
+    this.collect += choiseValue;
+    if(choiseValue != 1) this.hasWrongValue = true;
+    this.results.push(choise);
+  }
 
-export const makeQuiz = (props: OwnProps) => {
-  let choiseValues: {A: string, B: string} = {A: '', B: ''};
+  readResult() {
+    return {
+      total: this.total,
+      collect: this.collect,
+      allChoises: this.results,
+      hasWrongValue: this.hasWrongValue,
+    }
+  }
+}
+
+export type QuizProps<T1, T2> = {questions: readonly IQuestion<T1>[], results: IQuestionResult<T1, T2>};
+
+export type Choise2Quiz = (questionNumber: number) => IQuestion<number>;
+
+export const makeQuiz: Choise2Quiz = (questionNumber) => {
+  const id = (questionNumber) + '_testQuiz';
+  const choiseValues = {A: 'A', B: 'B'};
+
   let quiz = '';
   let answer: 'A' | 'B' = 'A';
-
-  const answerValue = '正解';
-  const wrongValue = '不正解';
-
   const i = Math.round(Math.random());
   if(i === 1) {
-    choiseValues = {A: answerValue, B: wrongValue};
     answer = 'A';
     quiz = 'Aが正解の問題です。';
   } else {
-    choiseValues = {B: answerValue, A: wrongValue};
     answer = 'B';
     quiz = 'Bが正解の問題です。';
   }
 
-  return{
-    choiseValues,
+  const info = new Auto2ChoiseQuizInfo(
+    id,
     quiz,
+    choiseValues,
     answer,
-  }
+    `${answer}を選べば正解です。`
+  );
+
+  return info;
 }
 
-const randomAorB = (quiz: string, answerValue: string, wrongValue: string) => {
+const randomAorB = (id: string, quiz: string, answerValue: string, wrongValue: string) => {
   const i = Math.round(Math.random());
   let answer: 'A' | 'B';
   let choiseValues: {A: string, B: string};
@@ -56,42 +114,50 @@ const randomAorB = (quiz: string, answerValue: string, wrongValue: string) => {
     answer = 'B';
     choiseValues = {B: answerValue, A: wrongValue};
   }
-  return({
-    answer,
+
+  const info = new Auto2ChoiseQuizInfo(
+    id,
+    quiz,
     choiseValues,
-    quiz
-  })
+    answer,
+    `${answer}を選べば正解です。`
+  );
+
+  return info;
 }
 
-export const makeAddQuiz = (digits: number) => (props: QuizProps) => {
-  let maxValue = 0;
-  for(let i = 0; i < digits; i++) {
-    maxValue += (Math.pow(10, i) * 9);
-  }
-  const valueA = Math.round(Math.random() * maxValue);
-  const valueB = Math.round(Math.random() * maxValue);
-  const quiz = valueA + '+' + valueB + '=?';
-  const answerValue = valueA + valueB;
-  const addValue = Math.round(Math.random() * 20);
-  const wrongValue = answerValue + (addValue === 10 ? addValue - 10 : 11);
-  return randomAorB(quiz, answerValue + '', wrongValue + '')
-}
+//export const makeAddQuiz = (digits: number) => (props: QuizProps<number>) => {
+//  const id = (questionNumber) + '_';
+//  let maxValue = 0;
+//  for(let i = 0; i < digits; i++) {
+//    maxValue += (Math.pow(10, i) * 9);
+//  }
+//  const valueA = Math.round(Math.random() * maxValue);
+//  const valueB = Math.round(Math.random() * maxValue);
+//  const quiz = valueA + '+' + valueB + '=?';
+//  const answerValue = valueA + valueB;
+//  const addValue = Math.round(Math.random() * 20);
+//  const wrongValue = answerValue + (addValue === 10 ? addValue - 10 : 11);
+//  return randomAorB(id, quiz, answerValue + '', wrongValue)
+//}
 
-export const makeMulQuiz = (digits: number) => (props: QuizProps) => {
-  let maxValue = 0;
-  for(let i = 0; i < digits; i++) {
-    maxValue += (Math.pow(10, i) * 9);
-  }
-  const valueA = Math.round(Math.random() * maxValue);
-  const valueB = Math.round(Math.random() * maxValue);
-  const quiz = valueA + ' × ' + valueB + ' = ?';
-  const answerValue = valueA * valueB;
-  const addValue = Math.round(Math.random() * 20) * Math.pow(10, digits - 2);
-  const wrongValue = answerValue + (addValue === 10 ? addValue - 10 : 11);
-  return randomAorB(quiz, answerValue + '', wrongValue + '')
-}
+//export const makeMulQuiz = (digits: number) => (props: QuizProps<number>) => {
+//  const id = (questionNumber) + '_';
+//  let maxValue = 0;
+//  for(let i = 0; i < digits; i++) {
+//    maxValue += (Math.pow(10, i) * 9);
+//  }
+//  const valueA = Math.round(Math.random() * maxValue);
+//  const valueB = Math.round(Math.random() * maxValue);
+//  const quiz = valueA + ' × ' + valueB + ' = ?';
+//  const answerValue = valueA * valueB;
+//  const addValue = Math.round(Math.random() * 20) * Math.pow(10, digits - 2);
+//  const wrongValue = answerValue + (addValue === 10 ? addValue - 10 : 11);
+//  return randomAorB(id, quiz, answerValue + '', wrongValue)
+//}
 
-export const make1MulQuiz = (props: QuizProps) => {
+export const make1MulQuiz: Choise2Quiz = (questionNumber) => {
+  const id = (questionNumber) + '_1MulQuiz';
   let maxValue = 8;
   const valueA = Math.round(Math.random() * maxValue) + 1;
   const valueB = Math.round(Math.random() * maxValue) + 1;
@@ -135,17 +201,18 @@ export const make1MulQuiz = (props: QuizProps) => {
       break;
     }
   }
-  return randomAorB(quiz, answerValue + '', wrongValue)
+  return randomAorB(id, quiz, answerValue + '', wrongValue)
 }
 
 const pi100 = '1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679';
 
 // 100桁まで作れる
-export const makePieQuiz = (props: QuizProps) => {
-  const resDigits = props.answeredCount;
+export const makePieQuiz = (questionNumber: number) => {
+  const id = (questionNumber) + '_PieQuiz';
+  const resDigits = questionNumber - 1;
   const answerValue = parseInt(pi100[resDigits]);
   const wrongAdd = Math.floor(Math.random() * 9) + 1;
   const wrongValue = (answerValue + wrongAdd) % 10;
   const quiz = `円周率は3.` + (resDigits > 0 ? pi100.substr(0, resDigits) : '') + '?';
-  return randomAorB(quiz, answerValue + '', wrongValue + '');
+  return randomAorB(id, quiz, answerValue + '', wrongValue + '');
 }

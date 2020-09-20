@@ -1,29 +1,33 @@
 import { QuizActionTypes } from './types';
-import next from 'next';
-import { stringify } from 'querystring';
+import { IQuestion } from 'lib/IQuestion';
 
-export const answerQuiz = (choises: 'A' | 'B' | 'N') => ({
+export const answerQuiz = (questionNum: number, answeredValue: number) => ({
   type: QuizActionTypes.ANSWER as QuizActionTypes.ANSWER,
-  choises
+  questionNum,
+  answeredValue
 });
 
-export const timeoverQuiz = () => ({
-  type: QuizActionTypes.TIMEOVER as QuizActionTypes.TIMEOVER
+export const timeoverQuiz = (questionNum: number) => ({
+  type: QuizActionTypes.TIMEOVER as QuizActionTypes.TIMEOVER,
+  questionNum,
 });
 
 export const initialize = () => ({
   type: QuizActionTypes.INITIALIZE as QuizActionTypes.INITIALIZE
 })
 
-export const nextQuestion = (question: string, answer: 'A' | 'B', choises: {A: string, B: string}) => ({
+export const setInterval = () => ({
+  type: QuizActionTypes.INTERVAL as QuizActionTypes.INTERVAL,
+})
+
+export const nextQuestion = (question: IQuestion<number>) => ({
   type: QuizActionTypes.NEXTQUESTION as QuizActionTypes.NEXTQUESTION,
-  question,
-  answer,
-  choises
+  question: question as IQuestion<number>
 })
 
 export type ActionResultTypes =
   ReturnType<typeof answerQuiz> |
   ReturnType<typeof timeoverQuiz> |
   ReturnType<typeof nextQuestion> |
+  ReturnType<typeof setInterval> |
   ReturnType<typeof initialize>;

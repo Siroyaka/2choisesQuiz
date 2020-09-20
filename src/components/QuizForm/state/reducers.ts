@@ -2,22 +2,19 @@ import React from 'react';
 
 import { QuizActionTypes } from './types';
 import { ActionResultTypes } from './actions';
-import { QuizInfo } from 'lib/makeQuiz';
+import { IQuestionReducerState } from 'lib/IQuestion';
+import { Choise2Result, Auto2ChoiseQuizResult } from 'lib/makeQuiz';
 
-export interface OwnState {
-  isAnswered: boolean,
-  isSetQuiz: boolean,
-  isInitialize: boolean,
-  totalLength: number,
-  answeredCount: number,
-  quizResult: boolean[],
-  quizInfo: QuizInfo[],
-  viewingQuiz: string,
-  collectValue: 'A' | 'B' | 'N',
-  choiseValues: {A: string, B: string},
-}
+type State = IQuestionReducerState<number, Choise2Result>;
 
-type State = OwnState;
+export const getInitialState = (quizLength: number): IQuestionReducerState<number, Choise2Result> => ({
+  isAnswered: false,
+  isInitialize: true,
+  isSetQuiz: false,
+  totalLength: quizLength,
+  quizResult: new Auto2ChoiseQuizResult(quizLength),
+  quizInfo: [],
+})
 
 const reducer: React.Reducer<State, ActionResultTypes> = (state, action) => {
   switch (action.type) {
@@ -26,9 +23,18 @@ const reducer: React.Reducer<State, ActionResultTypes> = (state, action) => {
       newState.isInitialize = false;
       newState.isSetQuiz = false;
       newState.isAnswered = true;
-      newState.answeredCount = newState.answeredCount + 1;
-      const quizResult = state.collectValue === action.choises;
-      newState.quizResult.push(quizResult);
+      const value = newState.quizInfo[action.questionNum].getChoisesValue()[action.answeredValue];
+      newState.quizResult.appendChoiseValue(value, action.answeredValue);
+
+      return newState;
+    }
+    case QuizActionTypes.TIMEOVER: {
+      const newState = {...state};
+      newState.isInitialize = false;
+      newState.isSetQuiz = false;
+      newState.isAnswered = true;
+      const value = newState.quizInfo[action.questionNum].getFailureValue();
+      newState.quizResult.appendChoiseValue(value, -1);
 
       return newState;
     }
@@ -36,16 +42,18 @@ const reducer: React.Reducer<State, ActionResultTypes> = (state, action) => {
       const newState = {...state};
 
       // 問題の設定
-      newState.collectValue = action.answer;
-      newState.choiseValues = action.choises;
-      newState.viewingQuiz = action.question;
-      const collectValue = action.answer === 'A' ? action.choises.A : action.choises.B;
-      const info = action.question.replace('?', collectValue);
-      newState.quizInfo.push(info);
+      newState.quizInfo.push(action.question);
       newState.isInitialize = false;
       newState.isAnswered = false;
       newState.isSetQuiz = true;
 
+      return newState;
+    }
+    case QuizActionTypes.INTERVAL: {
+      const newState = {...state};
+      newState.isInitialize = false;
+      newState.isSetQuiz = false;
+      newState.isAnswered = false;
       return newState;
     }
     default: {

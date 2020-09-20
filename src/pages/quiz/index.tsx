@@ -2,8 +2,7 @@ import React from 'react';
 
 import Head from 'next/head';
 
-import { ResultFormReducers, resultFormInitialState, QuizResultTypes } from 'components/ResultForm/state';
-import { QuizInfo, makeQuiz } from 'lib/makeQuiz';
+import { makeQuiz } from 'lib/makeQuiz';
 import QuizTemplate from 'components/Template/QuizTemplate';
 
 interface OwnProps {

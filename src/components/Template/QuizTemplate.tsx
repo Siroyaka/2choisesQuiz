@@ -1,10 +1,10 @@
 import React from 'react';
 
 import { ResultFormReducers, resultFormInitialState, QuizResultTypes } from 'components/ResultForm/state';
-import { QuizInfo } from 'lib/makeQuiz';
-import QuizForm, {OwnProps as QuizFormProps} from 'components/QuizForm';
+import QuizForm, {Props as QuizFormProps} from 'components/QuizForm';
 import ResultForm from 'components/ResultForm';
 import SoundEffect from 'lib/soundEffect';
+import { Choise2Result } from 'lib/makeQuiz';
 
 interface OwnProps {
   title: string,
@@ -23,12 +23,10 @@ const QuizTemplate: React.FC<Props> = (props) => {
   const [endInitialize, setEndInitialize] = React.useState(false);
   const se = React.useRef<SoundEffect>();
 
-  const setFinished = React.useCallback((result: boolean[], infos: QuizInfo[], totalLength: number) => {
+  const setFinished = React.useCallback((result: Choise2Result) => {
     dispatch({
       type: QuizResultTypes.VIEWRESULT,
       result,
-      infos,
-      totalLength
     })
   }, []);
   React.useEffect(() => {

@@ -1,24 +1,18 @@
 import { Reducer } from 'react';
 
-import { QuizInfo } from 'lib/makeQuiz';
 import { QuizResultTypes } from './types';
 import { ActionTypes } from './actions';
+import { Choise2Result } from 'lib/makeQuiz';
 
-export interface OwnState {
-  isFinished: boolean,
-  quizResult: boolean[],
-  quizInfo: QuizInfo[],
-  totalLength: number,
-}
-
-export const initialState: OwnState = {
+export const initialState: State = {
   isFinished: false,
-  quizResult: [],
-  quizInfo: [],
-  totalLength: 0
+  total: 0,
+  collect: 0,
+  allChoises: [],
+  hasWrongValue: false
 }
 
-type State = OwnState;
+export type State = Choise2Result & {isFinished: boolean};
 
 const reducer: Reducer<State, ActionTypes> = (state, action) => {
   switch (action.type) {
@@ -26,12 +20,10 @@ const reducer: Reducer<State, ActionTypes> = (state, action) => {
       return initialState;
     }
     case QuizResultTypes.VIEWRESULT: {
-      const newState = {...state};
-      newState.quizInfo = action.infos;
-      newState.quizResult = action.result;
-      newState.isFinished = true;
-      newState.totalLength = action.totalLength;
-      return newState;
+      return {
+        ...action.result,
+        isFinished: true,
+      };
     }
     default: {
       return initialState;
