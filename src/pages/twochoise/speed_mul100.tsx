@@ -19,7 +19,7 @@ const HeadItem: React.FC<{title: string}> = (props) => {
   return(
     <Head>
       <title>{title}</title>
-      <meta key='ogUrl' property="og:url" content={`${InitialMetaData.ogUrl}/automatic/speed_mul100`}/>
+      <meta key='ogUrl' property="og:url" content={`${InitialMetaData.ogUrl}/twochoise/speed_mul100`}/>
       <meta key='ogTitle' property="og:title" content={title}/>
       <meta key='ogDescription' property="og:description" content={'100問の簡単な掛け算を何問解けるかな？答える時間は1問1秒しかないから急いでね！'}/>
     </Head>

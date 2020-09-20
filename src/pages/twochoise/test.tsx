@@ -3,7 +3,7 @@ import React from 'react';
 import Head from 'next/head';
 
 import { makeQuiz } from 'lib/makeQuiz';
-import QuizTemplate from 'components/TwoChoise';
+import QuizComponent from 'components/AnyChoise';
 
 interface OwnProps {
 
@@ -27,8 +27,8 @@ const TestQuizPage: React.FC<Props> = (props) => {
   return(
     <React.Fragment>
       <HeadItem title={title}/>
-      <main>
-        <QuizTemplate
+      <main className='h-full'>
+        <QuizComponent
           title='テストクイズ'
           hashTags={['テストクイズ']}
           quiz={makeQuiz}

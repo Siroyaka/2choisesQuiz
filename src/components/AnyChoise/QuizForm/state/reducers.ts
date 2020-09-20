@@ -27,7 +27,6 @@ const reducer: React.Reducer<State, ActionResultTypes> = (state, action) => {
       newState.isAnswered = true;
       const value = newState.quizInfo[action.questionNum].getChoisesValue()[action.answeredValue];
       newState.quizResult.appendChoiseValue(value, action.answeredValue);
-
       return newState;
     }
     case QuizActionTypes.TIMEOVER: {

@@ -23,7 +23,6 @@ export type Quiz<T, TObj> = (obj: TObj) => IQuestion<T>;
 export interface IQuestionFormProps<T1, T2, TObj> {
   onFinished: (result: T2) => void,
   quiz: Quiz<T1, TObj>, // クイズを作成する関数
-  quizLength: number, // クイズの数
   timeLimit?: number, // 1問あたりの制限時間
   captionSpeed?: number, // 問題の文字送りの速さ
   questionInterval?: number, // 問題を答えた後にどのくらいインターバルをあけるか
@@ -36,8 +35,7 @@ export interface IQuestionReducerState<T1, T2> {
   isAnswered: boolean, // 答えた直後の状態であることを示す
   isSetQuiz: boolean, // クイズをStateに追加した直後の状態であることを示す
   isInitialize: boolean, // 初期状態であることを示す
-  totalLength: number, // 問題数の総量
-  quizResult: IQuestionResult<T1, T2>, // 問題に答えた後の状態
+  quizResult: IQuestionResult<T1, T2>, // 問題に答えた結果
   quizInfo: IQuestion<T1>[], // 問題について
 }
 

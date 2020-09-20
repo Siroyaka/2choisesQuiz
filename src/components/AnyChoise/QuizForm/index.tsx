@@ -141,14 +141,14 @@ const QuizForm: React.FC<Props> = (props) => {
   }, []);
 
   const getButtonValues = () => {
-    if(state.isInitialize) return ['', ''];
+    if(state.isInitialize) return [];
     if(state.isSetQuiz) return state.quizInfo[state.quizResult.answeredCount].getChoises();
     if(state.isAnswered) {
       const answer = state.quizInfo[state.quizResult.answeredCount - 1].getChoisesValue();
       const collectOrWrong = (n: number) => n === 1 ? '〇' : '×';
-      return [collectOrWrong(answer[0]), collectOrWrong(answer[1])];
+      return answer.map(x => collectOrWrong(x));
     }
-    return ['', ''];
+    return [];
   }
 
   return(
@@ -189,22 +189,17 @@ const QuizForm: React.FC<Props> = (props) => {
           }
         </div>
         <div id='answer-buttons' className='flex flex-wrap mt-6'>
-          <div className='w-full sm:w-1/2 px-4 py-3'>
-            <button
-              className='rounded-full quiz-button w-full bg-blue-400 focus:outline-none border border-black active:bg-blue-300'
-              onClick={() => pushAnswer(0)}
-            >
-              <span>{getButtonValues()[0]}</span>
-            </button>
-          </div>
-          <div className='w-full sm:w-1/2 px-4 py-3'>
-            <button
-              className='rounded-full quiz-button w-full bg-blue-400 focus:outline-none border border-black active:bg-blue-300'
-              onClick={() => pushAnswer(1)}
-            >
-              <span>{getButtonValues()[1]}</span>
-            </button>
-          </div>
+          {getButtonValues().map((v, i) => (
+              <div key={`choise_${i}`} className='w-full sm:w-1/2 px-4 py-3'>
+                <button
+                  className='rounded-full quiz-button w-full bg-blue-400 focus:outline-none border border-black active:bg-blue-300'
+                  onClick={() => pushAnswer(i)}
+                >
+                  <span>{v}</span>
+                </button>
+              </div>
+            ))
+          }
         </div>
       </div>
       <div className='hidden lg:block w-1/5 h-full'>

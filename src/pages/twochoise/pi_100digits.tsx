@@ -19,7 +19,7 @@ const HeadItem: React.FC<{title: string}> = (props) => {
   return(
     <Head>
       <title>{title}</title>
-      <meta key='ogUrl' property="og:url" content={`${InitialMetaData.ogUrl}/original/pi_100digits`}/>
+      <meta key='ogUrl' property="og:url" content={`${InitialMetaData.ogUrl}/twochoise/pi_100digits`}/>
       <meta key='ogTitle' property="og:title" content={title}/>
       <meta key='ogDescription' property="og:description" content={'円周率何桁答えられる？'}/>
     </Head>
