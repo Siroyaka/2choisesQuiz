@@ -3,12 +3,10 @@ import React from 'react';
 import Link from 'next/link';
 import Head from 'next/head';
 
-import PagesData from 'lib/PagesData';
-
 const HeadItems: React.FC = () => {
   return(
     <Head>
-      <title>2択クイズ</title>
+      <title>選択クイズ</title>
     </Head>
   )
 }
@@ -18,15 +16,11 @@ const Home: React.FC = () => {
     <React.Fragment>
       <HeadItems />
       <div className='my-2 mx-4'>
-        {PagesData.map(x => (
-          <nav key={'contents-' + x.title}>
-            <Link href={x.href}>
-              <button className='p-4 border hover:bg-blue-300 bg-blue-400 rounded-full focus:outline-none'>
-                {x.title}
-              </button>
-            </Link>
-          </nav>
-        ))}
+        <Link href='/twochoise'>
+          <button className='p-4 border hover:bg-blue-300 bg-blue-400 rounded-full focus:outline-none'>
+            2択クイズ
+          </button>
+        </Link>
       </div>
     </React.Fragment>
   )

@@ -40,3 +40,9 @@ export interface IQuestionReducerState<T1, T2> {
   quizResult: IQuestionResult<T1, T2>, // 問題に答えた後の状態
   quizInfo: IQuestion<T1>[], // 問題について
 }
+
+export interface IQuestionResultFormProps {
+  title: string,
+  hashTags: string[],
+  notShare?: boolean
+}
