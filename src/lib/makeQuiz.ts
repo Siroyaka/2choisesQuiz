@@ -56,11 +56,11 @@ export class Auto2ChoiseQuizResult implements IQuestionResult<number, Choise2Res
     this.answeredCount = 0;
   }
 
-  appendChoiseValue(choiseValue: number, choise: number) {
+  appendChoiseValue(choiseValue: number, choiseIndex: number) {
     this.answeredCount += 1;
     this.collect += choiseValue;
     if(choiseValue != 1) this.hasWrongValue = true;
-    this.results.push(choise);
+    this.results.push(choiseIndex);
   }
 
   readResult() {

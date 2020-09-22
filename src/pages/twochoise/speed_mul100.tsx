@@ -2,9 +2,9 @@ import React from 'react';
 
 import Head from 'next/head';
 
-import QuizTemplate from 'components/TwoChoise';
-import { make1MulQuiz } from 'lib/makeQuiz';
 import InitialMetaData, {commonHashTags} from 'lib/InitialMetaData';
+import { make1MulQuiz } from 'lib/createQuestion/choiseQuiz';
+import QuizComponent from 'components/AnyChoise';
 
 interface OwnProps {
 
@@ -32,10 +32,10 @@ const QuizPage: React.FC<Props> = (props) => {
     <React.Fragment>
       <HeadItem title={title}/>
       <main className='h-full'>
-        <QuizTemplate
+        <QuizComponent
           title={title}
           hashTags={[...commonHashTags, title]}
-          quiz={make1MulQuiz}
+          quiz={make1MulQuiz(2)}
           captionSpeed={1}
           timeLimit={2}
           quizLength={100}

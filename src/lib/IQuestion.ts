@@ -1,7 +1,7 @@
 // 問題集計する形式
 export interface IQuestionResult<TIn, TRe> {
   answeredCount: number,
-  appendChoiseValue: (choiseValue: TIn, choise: number) => void
+  appendChoiseValue: (choiseValue: TIn, choiseIndex: number) => void
   readResult: () => TRe
 }
 

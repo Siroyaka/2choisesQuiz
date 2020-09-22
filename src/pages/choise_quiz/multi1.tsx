@@ -2,8 +2,8 @@ import React from 'react';
 
 import Head from 'next/head';
 
-import InitialMetaData, { commonHashTags } from 'lib/InitialMetaData';
-import { makePieQuiz } from 'lib/createQuestion/choiseQuiz';
+import InitialMetaData, {commonHashTags} from 'lib/InitialMetaData';
+import { make1MulQuiz } from 'lib/createQuestion/choiseQuiz';
 import QuizComponent from 'components/AnyChoise';
 
 interface OwnProps {
@@ -19,15 +19,15 @@ const HeadItem: React.FC<{title: string}> = (props) => {
   return(
     <Head>
       <title>{title}</title>
-      <meta key='ogUrl' property="og:url" content={`${InitialMetaData.ogUrl}/twochoise/pi_100digits`}/>
+      <meta key='ogUrl' property="og:url" content={`${InitialMetaData.ogUrl}/choise_quiz/multi1`}/>
       <meta key='ogTitle' property="og:title" content={title}/>
-      <meta key='ogDescription' property="og:description" content={'円周率何桁答えられる？'}/>
+      <meta key='ogDescription' property="og:description" content={'1桁の掛け算を10問解いてみよう！'}/>
     </Head>
   )
 }
 
-const Pi100DigitsPage: React.FC<Props> = (props) => {
-  const title = '円周率100桁クイズ';
+const QuizPage: React.FC<Props> = (props) => {
+  const title = '掛け算10問クイズ';
   return(
     <React.Fragment>
       <HeadItem title={title}/>
@@ -35,14 +35,13 @@ const Pi100DigitsPage: React.FC<Props> = (props) => {
         <QuizComponent
           title={title}
           hashTags={[...commonHashTags, title]}
-          quiz={makePieQuiz}
-          captionSpeed={0}
-          quizLength={100}
-          wrongStop
+          quiz={make1MulQuiz(3)}
+          quizLength={10}
+          startCountdown={4}
         />
       </main>
     </React.Fragment>
   )
 }
 
-export default Pi100DigitsPage;
+export default QuizPage;
