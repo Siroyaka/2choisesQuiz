@@ -142,12 +142,13 @@ const QuizForm: React.FC<Props> = (props) => {
 
   const getButtonValues = () => {
     if(state.isInitialize) return [];
-    if(state.isSetQuiz) return state.quizInfo[state.quizResult.answeredCount].getChoises();
     if(state.isAnswered) {
       const answer = state.quizInfo[state.quizResult.answeredCount - 1].getChoisesValue();
       const collectOrWrong = (n: number) => n === 1 ? '〇' : '×';
       return answer.map(x => collectOrWrong(x));
     }
+    if(!viewChoises && (captionSpeed === undefined || captionSpeed > 0)) return [];
+    if(state.isSetQuiz) return state.quizInfo[state.quizResult.answeredCount].getChoises();
     return [];
   }
 
