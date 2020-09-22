@@ -1,34 +1,23 @@
 import React from 'react';
 
-import { ResultFormReducers, resultFormInitialState, QuizResultTypes } from 'components/ResultForm/state';
-import { QuizInfo } from 'lib/makeQuiz';
-import QuizForm, {OwnProps as QuizFormProps} from 'components/QuizForm';
-import ResultForm from 'components/ResultForm';
+import ResultForm from './ResultForm';
+import { ResultFormReducers, resultFormInitialState, QuizResultTypes } from './ResultForm/state';
+import QuizForm, {Props as QuizFormProps} from './QuizForm';
 import SoundEffect from 'lib/soundEffect';
+import { Choise2Result } from 'lib/makeQuiz';
+import { IQuestionResultFormProps } from 'lib/IQuestion';
 
-interface OwnProps {
-  title: string,
-  hashTags: string[]
-}
+type Props = IQuestionResultFormProps & Omit<QuizFormProps, 'onFinished'>;
 
-type Props = OwnProps & Omit<QuizFormProps, 'onFinished'>;
-
-const QuizTemplate: React.FC<Props> = (props) => {
-  const {
-    title,
-    hashTags
-  } = props;
-
+const TwoChoise: React.FC<Props> = (props) => {
   const [result, dispatch] = React.useReducer(ResultFormReducers, resultFormInitialState);
   const [endInitialize, setEndInitialize] = React.useState(false);
   const se = React.useRef<SoundEffect>();
 
-  const setFinished = React.useCallback((result: boolean[], infos: QuizInfo[], totalLength: number) => {
+  const setFinished = React.useCallback((result: Choise2Result) => {
     dispatch({
       type: QuizResultTypes.VIEWRESULT,
       result,
-      infos,
-      totalLength
     })
   }, []);
   React.useEffect(() => {
@@ -81,10 +70,10 @@ const QuizTemplate: React.FC<Props> = (props) => {
         />
       }
       {result.isFinished && endInitialize &&
-        <ResultForm {...result} title={title} hashTags={hashTags}/>
+        <ResultForm {...result} {...props} />
       }
     </React.Fragment>
   )
 }
 
-export default QuizTemplate;
+export default TwoChoise;

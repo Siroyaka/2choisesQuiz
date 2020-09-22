@@ -2,9 +2,8 @@ import React from 'react';
 
 import Head from 'next/head';
 
-import { ResultFormReducers, resultFormInitialState, QuizResultTypes } from 'components/ResultForm/state';
-import { QuizInfo, makeQuiz } from 'lib/makeQuiz';
-import QuizTemplate from 'components/Template/QuizTemplate';
+import { makeTestQuiz } from 'lib/createQuestion/choiseQuiz';
+import QuizComponent from 'components/AnyChoise';
 
 interface OwnProps {
 
@@ -23,24 +22,25 @@ const HeadItem: React.FC<{title: string}> = (props) => {
   )
 }
 
-const QuizPage: React.FC<Props> = (props) => {
+const TestQuizPage: React.FC<Props> = (props) => {
   const title = 'テストクイズ';
   return(
     <React.Fragment>
       <HeadItem title={title}/>
-      <main>
-        <QuizTemplate
+      <main className='h-full'>
+        <QuizComponent
           title='テストクイズ'
           hashTags={['テストクイズ']}
-          quiz={makeQuiz}
+          quiz={makeTestQuiz}
           captionSpeed={10}
           quizLength={5}
           timeLimit={10}
           countdownSpeed={500}
+          notShare
         />
       </main>
     </React.Fragment>
   )
 }
 
-export default QuizPage;
+export default TestQuizPage;

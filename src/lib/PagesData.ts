@@ -3,15 +3,17 @@ interface IPages {
   href: string
 }
 
-const PagesData: IPages[] = ([
+export const twoChoisePageData : IPages[] = ([
   {
     title: '掛け算超速100問',
-    href: '/automatic/speed_mul100'
+    href: '/twochoise/speed_mul100'
   },
   {
     title: '円周率100桁クイズ',
-    href: '/original/pi_100digits'
+    href: '/twochoise/pi_100digits'
+  },
+  {
+    title: 'テスト問題',
+    href: '/twochoise/test'
   }
-])
-
-export default PagesData;
+]);

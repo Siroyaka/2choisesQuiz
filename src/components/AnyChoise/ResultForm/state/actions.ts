@@ -1,11 +1,9 @@
 import { QuizResultTypes } from './types';
-import { QuizInfo } from 'lib/makeQuiz'
+import { Choise2Result } from 'lib/makeQuiz';
 
-export const viewResult = (result: boolean[], infos: QuizInfo[], totalLength: number) => ({
+export const viewResult = (result: Choise2Result) => ({
   type: QuizResultTypes.VIEWRESULT as QuizResultTypes.VIEWRESULT,
   result,
-  infos,
-  totalLength
 });
 
 export const initializeResult = () => ({

@@ -22,7 +22,7 @@ const MyApp = ({ Component, pageProps }) => {
   return(
     <React.Fragment>
       <HeadItems />
-      <Header title='2択クイズ'/>
+      <Header title='選択クイズ'/>
       <div className='pt-16 h-full'>
         <Component {...pageProps} />
       </div>
