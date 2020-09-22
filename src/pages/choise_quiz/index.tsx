@@ -3,12 +3,12 @@ import React from 'react';
 import Link from 'next/link';
 import Head from 'next/head';
 
-import { pageData } from 'lib/pageList/twochoise';
+import { pageData } from 'lib/pageList/choise_quiz';
 
 const HeadItems: React.FC = () => {
   return(
     <Head>
-      <title>2択クイズ</title>
+      <title>多選択クイズ</title>
     </Head>
   )
 }

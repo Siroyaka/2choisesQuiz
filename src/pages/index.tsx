@@ -22,6 +22,13 @@ const Home: React.FC = () => {
           </button>
         </Link>
       </div>
+      <div className='my-2 mx-4'>
+        <Link href='/choise_quiz'>
+          <button className='p-4 border hover:bg-blue-300 bg-blue-400 rounded-full focus:outline-none'>
+            選択クイズ
+          </button>
+        </Link>
+      </div>
     </React.Fragment>
   )
 }
