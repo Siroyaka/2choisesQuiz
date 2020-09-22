@@ -14,6 +14,10 @@ const TwoChoise: React.FC<Props> = (props) => {
   const [endInitialize, setEndInitialize] = React.useState(false);
   const se = React.useRef<SoundEffect>();
 
+  const {
+    title
+  } = props;
+
   const setFinished = React.useCallback((result: Choise2Result) => {
     dispatch({
       type: QuizResultTypes.VIEWRESULT,
@@ -44,7 +48,7 @@ const TwoChoise: React.FC<Props> = (props) => {
   return(
     <React.Fragment>
       {!endInitialize && 
-      <div className='flex flex-col items-center'>
+      <div className='flex flex-col items-center mx-4'>
         <span className='text-3xl'>iPhone、iPadをお使いの人は音なしを選択してください。</span>
         <div className='flex flex-row pt-2 items-center justify-center'>
           <button

@@ -34,7 +34,7 @@ const QuizPage: React.FC<Props> = (props) => {
       <main className='h-full'>
         <QuizComponent
           title={title}
-          hashTags={[...commonHashTags, title]}
+          hashTags={[...commonHashTags]}
           quiz={make1MulQuiz(2)}
           captionSpeed={25}
           timeLimit={2}

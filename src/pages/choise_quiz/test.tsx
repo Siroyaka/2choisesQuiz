@@ -30,7 +30,7 @@ const TestQuizPage: React.FC<Props> = (props) => {
       <main className='h-full'>
         <QuizComponent
           title='テストクイズ'
-          hashTags={['テストクイズ']}
+          hashTags={[]}
           quiz={makeTestQuiz}
           captionSpeed={10}
           quizLength={5}

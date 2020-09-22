@@ -34,7 +34,7 @@ const Pi100DigitsPage: React.FC<Props> = (props) => {
       <main className='h-full'>
         <QuizComponent
           title={title}
-          hashTags={[...commonHashTags, title]}
+          hashTags={[...commonHashTags]}
           quiz={makePieQuiz}
           captionSpeed={0}
           quizLength={100}
