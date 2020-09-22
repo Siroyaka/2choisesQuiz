@@ -26,9 +26,10 @@ const QuestionWindow: React.FC<Props> = (props) => {
       onFinished && onFinished();
       return;
     }
-    setShownTexts(text.substr(0, count + 1));
+    const subText = count === 0 ? '' : text.substr(0, count);
+    setShownTexts(subText);
     count++;
-    if(count === text.length + 1) {
+    if(count === text.length) {
       onFinished && onFinished();
       return;
     }
