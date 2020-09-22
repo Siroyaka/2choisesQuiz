@@ -171,7 +171,7 @@ const QuizForm: React.FC<Props> = (props) => {
               <div className='absolute top-0' style={{left: '2px'}}>
                 Q.{state.quizResult.answeredCount + 1}
               </div>
-              {countdown > 0 && !state.isInitialize &&
+              {countdown > 0 && !state.isInitialize && viewChoises &&
                 <div className='absolute time-limit-count text-center' style={{right: '4px', bottom: '3px', animationDuration: `${(countdownSpeed ?? 1000) / 1000}s`}}>
                   {countdown}
                 </div>

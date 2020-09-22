@@ -36,7 +36,7 @@ const QuizPage: React.FC<Props> = (props) => {
           title={title}
           hashTags={[...commonHashTags, title]}
           quiz={make1MulQuiz(2)}
-          captionSpeed={1}
+          captionSpeed={25}
           timeLimit={2}
           quizLength={100}
           startCountdown={4}
