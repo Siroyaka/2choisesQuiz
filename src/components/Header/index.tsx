@@ -4,24 +4,36 @@ import Link from 'next/link';
 
 interface OwnProps {
   title: string,
+  openDrawer?: () => void,
 }
 
 type Props = OwnProps;
 
 const Header: React.FC<Props> = (props) => {
-  const { title } = props;
-  const [openNavHeader, setOpenNavHeader] = React.useState(false);
-  const switchNavHeader = React.useCallback(() => setOpenNavHeader(!openNavHeader), [setOpenNavHeader, openNavHeader]);
+  const {
+    title,
+    openDrawer,
+  } = props;
 
   return(
     <React.Fragment>
-      <header className='w-full flex flex-row fixed top-0 h-16 bg-orange-300 border border-orange-300 px-4 py-1 items-center justify-center z-50' >
-        <div id='header-left-items' className='flex items-center'>
-          <Link href='/'>
-            <a>
-              <h1 className={'font-sans font-semibold text-4xl text-orange-600 mx-1'}>{title}</h1>
-            </a>
-          </Link>
+      <header className='w-full fixed top-0 h-16 border-b-2 bg-white z-50'>
+        <div className='h-full max-w-sm md:max-w-3xl xl:max-w-screen-xl mx-auto flex flex-row items-center px-2 xl:px-6'>
+          <div className='flex flex-row'>
+            <button
+              className='focus:outline-none rounded-full px-1 py-1 mr-3 xl:hidden'
+              onClick={openDrawer}
+            >
+              〇
+            </button>
+            <div id='header-left-items' className='hidden md:block flex items-center'>
+              <Link href='/'>
+                <a>
+                  <h1 className={'font-sans text-xl'}>{title}</h1>
+                </a>
+              </Link>
+            </div>
+          </div>
         </div>
       </header>
     </React.Fragment>

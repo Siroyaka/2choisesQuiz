@@ -30,6 +30,7 @@ const QuizForm: React.FC<Props> = (props) => {
     wrongStop,
     collectWord,
     wrongWord,
+    buttonSize,
   } = props;
 
   const [state, dispatch] = React.useReducer(quizReducer, getInitialState(quizLength));
@@ -152,12 +153,27 @@ const QuizForm: React.FC<Props> = (props) => {
     return [];
   }
 
+  const getButtonSize = () => {
+    switch(buttonSize) {
+      case 'small': {
+        return 'grid-cols-4 sm:grid-cols-6 lg:grid-cols-8';
+      }
+      case 'middle': {
+        return 'grid-cols-2 sm:grid-cols-4 lg:grid-cols-6';
+      }
+      case 'large': {
+        return 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4';
+      }
+      default: {
+        return 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4';
+      }
+    }
+  }
+
   return(
-    <div className='h-full flex flex-wrap'>
-      <div className='hidden lg:block w-1/5 h-full'>
-      </div>
-      <div className='w-full lg:w-3/5 h-full bg-red-200'>
-        <div id='question-display' className='mt-4 mx-3 border border-black rounded-lg bg-white relative' style={{minHeight: '9rem'}}>
+    <div className='h-full flex flex-wrap max-w-6xl mx-auto'>
+      <div className='w-full h-full px-4'>
+        <div id='question-display' className='mt-4 border border-black rounded-lg bg-white relative' style={{minHeight: '9rem'}}>
           {state.isSetQuiz && !state.isInitialize &&
             <React.Fragment>
               <div className='mt-6 text-3xl mx-4 flex flex-row justify-center'>
@@ -189,9 +205,9 @@ const QuizForm: React.FC<Props> = (props) => {
             </div>
           }
         </div>
-        <div id='answer-buttons' className='flex flex-wrap mt-6'>
+        <div id='answer-buttons' className={`grid gap-4 mt-6 ${getButtonSize()}`}>
           {getButtonValues().map((v, i) => (
-              <div key={`choise_${i}`} className='w-full sm:w-1/2 px-4 py-3'>
+              <div key={`choise_${i}`}>
                 <button
                   className='rounded-full quiz-button w-full bg-blue-400 focus:outline-none border border-black active:bg-blue-300'
                   onClick={() => pushAnswer(i)}
@@ -202,8 +218,6 @@ const QuizForm: React.FC<Props> = (props) => {
             ))
           }
         </div>
-      </div>
-      <div className='hidden lg:block w-1/5 h-full'>
       </div>
     </div>
   )

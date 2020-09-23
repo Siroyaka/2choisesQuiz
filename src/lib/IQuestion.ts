@@ -28,6 +28,7 @@ export interface IQuestionFormProps<T1, T2, TObj> {
   questionInterval?: number, // 問題を答えた後にどのくらいインターバルをあけるか
   countdownSpeed?: number, // カウントダウンのインターバルの長さ
   startCountdown?: number, // 初めにいくつカウントダウンするか
+  buttonSize?: 'small' | 'middle' | 'large',
 }
 
 // 問題を管理するReducerの基本型

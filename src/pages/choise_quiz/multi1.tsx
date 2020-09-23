@@ -38,6 +38,7 @@ const QuizPage: React.FC<Props> = (props) => {
           quiz={make1MulQuiz(4)}
           quizLength={10}
           startCountdown={4}
+          buttonSize='small'
         />
       </main>
     </React.Fragment>

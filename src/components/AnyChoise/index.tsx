@@ -1,5 +1,8 @@
 import React from 'react';
 
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+
 import ResultForm from './ResultForm';
 import { ResultFormReducers, resultFormInitialState, QuizResultTypes } from './ResultForm/state';
 import QuizForm, {Props as QuizFormProps} from './QuizForm';
@@ -18,6 +21,14 @@ const TwoChoise: React.FC<Props> = (props) => {
   const {
     title
   } = props;
+
+  const router = useRouter();
+  const paths = router.pathname.split('/');
+  const beforePath = paths.reduce((acc, x, i) => {
+    if(x === '') return acc;
+    if(i === paths.length - 1) return acc;
+    return acc + '/' + x;
+  }, '');
 
   const setFinished = React.useCallback((result: Choise2Result) => {
     dispatch({
@@ -49,7 +60,10 @@ const TwoChoise: React.FC<Props> = (props) => {
   return(
     <React.Fragment>
       {!endInitialize && 
-        <InitialForm onClickStart={onClickStart}/>
+        <InitialForm
+          title={title}
+          onClickStart={onClickStart}
+        />
       }
       {!result.isFinished && endInitialize &&
         <QuizForm
@@ -61,6 +75,15 @@ const TwoChoise: React.FC<Props> = (props) => {
       {result.isFinished && endInitialize &&
         <ResultForm {...result} {...props} />
       }
+      <div className='flex flex-row w-full justify-end'>
+        <Link href={beforePath}>
+          <button
+            className='border hover:bg-yellow-100 rounded-full py-1 px-4 text-2xl focus:outline-none '
+          >
+            戻る
+          </button>
+        </Link>
+      </div>
     </React.Fragment>
   )
 }

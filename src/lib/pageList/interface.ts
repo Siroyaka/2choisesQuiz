@@ -7,6 +7,7 @@ interface IPages {
   difficulty: number,
   minutesOfQuestion: number,
   summary?: string,
+  imgSrc?: string,
 }
 
 export default IPages;
