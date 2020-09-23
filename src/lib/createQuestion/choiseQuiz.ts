@@ -1,4 +1,5 @@
 import { IQuestion, IQuestionResult } from 'lib/IQuestion';
+import { randomRange } from 'lib/Useful';
 
 export class QuestionInfo implements IQuestion<number> {
   id = '';
@@ -116,7 +117,7 @@ const createRamdomCollect = (collectValue: string, wrongValues: string[]) => {
   })
 }
 
-// 1桁の掛け算の4択問題を作成する
+// 1桁の掛け算のn択問題を作成する
 export const make1MulQuiz = (choiseLength: number): Quiz => (questionNumber) => {
   const id = (questionNumber) + '_1MulQuiz';
   let maxValue = 8;
@@ -125,10 +126,10 @@ export const make1MulQuiz = (choiseLength: number): Quiz => (questionNumber) => 
   const quiz = valueA + ' × ' + valueB + ' = ?';
   const collect = valueA * valueB;
   const wrongValues = [];
-  for(let i = 0; i < choiseLength - 1; i++) {
-    const randomNum = Math.round(Math.random() * 6);
+
+  for(const i of randomRange(6, choiseLength)) {
     let wrongValue = '';
-    switch(randomNum) {
+    switch(i) {
       case 0: {
         wrongValue = (collect + 1) + ''
         break;
@@ -166,6 +167,7 @@ export const make1MulQuiz = (choiseLength: number): Quiz => (questionNumber) => 
     }
     wrongValues.push(wrongValue);
   }
+
   const randomCollect = createRamdomCollect(collect + '', wrongValues);
 
   return new QuestionInfo(id, quiz, randomCollect.choise, randomCollect.collectIndex);
