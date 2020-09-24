@@ -9,24 +9,6 @@
     "test": "jest",
     "test_watch": "jest --watch"
   },
-  "jest": {
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ],
-    "transform": {
-      "^.+\\.(ts|tsx)$": "ts-jest"
-    },
-    "globals": {
-      "ts-jest": {
-        "tsConfigFile": "tsconfig.json"
-      }
-    },
-    "testMatch": [
-      "**/*.jest.+(ts|tsx|js)"
-    ]
-  },
   "dependencies": {
     "@fullhuman/postcss-purgecss": "^3.0.0",
     "@types/jest": "^26.0.14",

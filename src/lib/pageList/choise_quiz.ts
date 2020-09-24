@@ -13,7 +13,7 @@ export const pageData : IPages[] = ([
   },
   {
     title: 'テスト問題',
-    href: `${pageRoot}/test`,
+    href: `${pageRoot}/testpage`,
     minutesOfQuestion: 1,
     difficulty: 1,
     category: ['2～8択クイズ'],
