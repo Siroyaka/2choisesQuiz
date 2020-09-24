@@ -5,20 +5,44 @@
   "scripts": {
     "dev": "next dev -p 3000",
     "build": "next build",
-    "start": "next start -p 3001"
+    "start": "next start -p 3001",
+    "test": "jest",
+    "test_watch": "jest --watch"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "ts-jest"
+    },
+    "globals": {
+      "ts-jest": {
+        "tsConfigFile": "tsconfig.json"
+      }
+    },
+    "testMatch": [
+      "**/*.jest.+(ts|tsx|js)"
+    ]
   },
   "dependencies": {
-    "@fullhuman/postcss-purgecss": "^2.3.0",
-    "@types/node": "^14.6.0",
-    "@types/react": "^16.9.46",
+    "@fullhuman/postcss-purgecss": "^3.0.0",
+    "@types/jest": "^26.0.14",
+    "@types/node": "^14.11.2",
+    "@types/react": "^16.9.49",
     "clsx": "^1.1.1",
     "gifshot": "^0.4.5",
-    "next": "9.5.2",
+    "jest": "^26.4.2",
+    "next": "9.5.3",
+    "npm-check-updates": "^9.0.2",
     "postcss-preset-env": "^6.7.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
-    "react-share": "^4.2.1",
-    "tailwindcss": "^1.7.1",
-    "typescript": "^3.9.7"
+    "react-share": "^4.3.0",
+    "tailwindcss": "^1.8.10",
+    "ts-jest": "^26.4.0",
+    "typescript": "^4.0.3"
   }
 }
