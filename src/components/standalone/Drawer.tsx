@@ -16,7 +16,7 @@ const Drawer: React.FC<Props> = (props) => {
 
   if(!open) return null;
   return(
-    <aside className='xl:hidden absolute left-0 top-0 h-full w-64 bg-white z-50'>
+    <aside className='xl:hidden fixed left-0 top-0 h-full w-64 bg-white z-50'>
       <div className='h-16 border-b-2 flex flex-row items-center px-2'>
         <button
           className='focus:outline-none rounded-full px-1 py-1'

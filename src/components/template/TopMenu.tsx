@@ -43,10 +43,10 @@ const TopMenu: React.FC<Props> = (props) => {
     <React.Fragment>
       <Header title={title} openDrawer={openDrawer}/>
       <div className='h-full max-w-screen-xl mx-auto flex relative px-3'>
-        <aside className='hidden pt-16 xl:flex flex-col w-1/6 h-full items-start my-8'>
+        <aside className='fixed top-0 hidden pt-16 xl:flex flex-col w-56 h-full items-start my-8'>
           {navContents}
         </aside>
-        <main className='pt-16 h-full xl:w-5/6 w-full '>
+        <main className='pt-16 h-full xl:pl-56 w-full '>
           <div className='mx-auto xl:max-w-5xl md:max-w-3xl max-w-sm my-8'>
             {children}
           </div>
