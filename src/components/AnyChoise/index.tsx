@@ -58,7 +58,7 @@ const TwoChoise: React.FC<Props> = (props) => {
     setEndInitialize(true);
   }, [se]);
   return(
-    <React.Fragment>
+    <div className='max-w-6xl mx-auto'>
       {!endInitialize && 
         <InitialForm
           title={title}
@@ -84,7 +84,7 @@ const TwoChoise: React.FC<Props> = (props) => {
           </button>
         </Link>
       </div>
-    </React.Fragment>
+    </div>
   )
 }
 

@@ -18,6 +18,7 @@ export type Props = IQuestionFormProps<number, Choise2Result, number> & OwnProps
 
 const QuizForm: React.FC<Props> = (props) => {
   const {
+    title,
     quiz,
     onFinished,
     quizLength,
@@ -170,57 +171,67 @@ const QuizForm: React.FC<Props> = (props) => {
     }
   }
 
-  return(
-    <div className='h-full flex flex-wrap max-w-6xl mx-auto'>
-      <div className='w-full h-full px-4'>
-        <div id='question-display' className='mt-4 border border-black rounded-lg bg-white relative' style={{minHeight: '9rem'}}>
-          {state.isSetQuiz && !state.isInitialize &&
-            <React.Fragment>
-              <div className='mt-6 text-3xl mx-4 flex flex-row justify-center'>
-                  <QuestionWindow
-                    key={(state.quizResult.answeredCount + 1) + '-question'}
-                    text={state.quizInfo[state.quizResult.answeredCount].getQuestion()}
-                    interval={captionSpeed ?? 100}
-                    onFinished={onShownQuestion}
-                  />
-              </div>
-              <div className='absolute top-0' style={{left: '2px'}}>
-                Q.{state.quizResult.answeredCount + 1}
-              </div>
-              {countdown > 0 && !state.isInitialize && viewChoises &&
-                <div className='absolute time-limit-count text-center' style={{right: '4px', bottom: '3px', animationDuration: `${(countdownSpeed ?? 1000) / 1000}s`}}>
-                  {countdown}
-                </div>
-              }
-            </React.Fragment>
-          }
-          {state.isInitialize && 
-            <div className='mt-6 text-3xl mx-4 flex flex-row justify-center'>
-              {countdown}
+  return (
+    <section id='question-section' className="w-full px-4 pt-4 mb-12">
+      <h1 id='question-title' className='text-xl'>{title}</h1>
+      <div
+        id="question-display"
+        className="border border-black rounded-lg bg-white relative"
+        style={{ minHeight: "9rem" }}
+      >
+        {state.isSetQuiz && !state.isInitialize && (
+          <React.Fragment>
+            <div className="mt-6 text-3xl mx-4 flex flex-row justify-center">
+              <QuestionWindow
+                key={state.quizResult.answeredCount + 1 + "-question"}
+                text={state.quizInfo[
+                  state.quizResult.answeredCount
+                ].getQuestion()}
+                interval={captionSpeed ?? 100}
+                onFinished={onShownQuestion}
+              />
             </div>
-          }
-          {!state.isInitialize && state.isAnswered &&
-            <div className='mt-6 text-3xl mx-4 flex flex-row justify-center'>
-              {answeredDisplayText}
+            <div className="absolute top-0" style={{ left: "2px" }}>
+              Q.{state.quizResult.answeredCount + 1}
             </div>
-          }
-        </div>
-        <div id='answer-buttons' className={`grid gap-4 mt-6 ${getButtonSize()}`}>
-          {getButtonValues().map((v, i) => (
-              <div key={`choise_${i}`}>
-                <button
-                  className='rounded-full quiz-button w-full bg-blue-400 focus:outline-none border border-black active:bg-blue-300'
-                  onClick={() => pushAnswer(i)}
-                >
-                  <span>{v}</span>
-                </button>
+            {countdown > 0 && !state.isInitialize && viewChoises && (
+              <div
+                className="absolute time-limit-count text-center"
+                style={{
+                  right: "4px",
+                  bottom: "3px",
+                  animationDuration: `${(countdownSpeed ?? 1000) / 1000}s`,
+                }}
+              >
+                {countdown}
               </div>
-            ))
-          }
-        </div>
+            )}
+          </React.Fragment>
+        )}
+        {state.isInitialize && (
+          <div className="mt-6 text-3xl mx-4 flex flex-row justify-center">
+            {countdown}
+          </div>
+        )}
+        {!state.isInitialize && state.isAnswered && (
+          <div className="mt-6 text-3xl mx-4 flex flex-row justify-center">
+            {answeredDisplayText}
+          </div>
+        )}
       </div>
-    </div>
-  )
+      <div id="answer-buttons" className={`grid gap-4 mt-6 justify-center ${getButtonSize()}`}>
+        {getButtonValues().map((v, i) => (
+          <button
+            key={`choise_${i}`}
+            className="rounded-full quiz-button w-full bg-blue-400 focus:outline-none border border-black active:bg-blue-300"
+            onClick={() => pushAnswer(i)}
+          >
+            <span>{v}</span>
+          </button>
+        ))}
+      </div>
+    </section>
+  );
 }
 
 export default QuizForm;

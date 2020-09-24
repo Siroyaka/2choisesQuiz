@@ -2,6 +2,8 @@ import React from 'react';
 
 import Link from 'next/link';
 
+import { MenuSvg } from 'components/parts/svgIcons';
+
 interface OwnProps {
   title: string,
   openDrawer?: () => void,
@@ -24,7 +26,7 @@ const Header: React.FC<Props> = (props) => {
               className='focus:outline-none rounded-full px-1 py-1 mr-3 xl:hidden'
               onClick={openDrawer}
             >
-              〇
+              <MenuSvg />
             </button>
             <div id='header-left-items' className='hidden md:block flex items-center'>
               <Link href='/'>

@@ -14,7 +14,7 @@ const InitialForm: React.FC<Props> = (props) => {
   } = props;
 
   return(
-    <div className='flex flex-col items-center mx-4 justfy-center py-32'>
+    <section id='question-initial-view' className='flex flex-col items-center mx-4 justfy-center py-32'>
       <h1 className='text-5xl'>{title}</h1>
       <div className='h-32'/>
       <div className='text-xl mb-4'>
@@ -34,7 +34,7 @@ const InitialForm: React.FC<Props> = (props) => {
           音なし
         </button>
       </div>
-    </div>
+    </section>
   )
 }
 
