@@ -1,8 +1,6 @@
 import React from 'react';
 
-import { useRouter } from 'next/router';
-import Link from 'next/link';
-
+import Header from './Header';
 import ResultForm from './ResultForm';
 import { ResultFormReducers, resultFormInitialState, QuizResultTypes } from './ResultForm/state';
 import QuizForm, {Props as QuizFormProps} from './QuizForm';
@@ -21,14 +19,6 @@ const TwoChoise: React.FC<Props> = (props) => {
   const {
     title
   } = props;
-
-  const router = useRouter();
-  const paths = router.pathname.split('/');
-  const beforePath = paths.reduce((acc, x, i) => {
-    if(x === '') return acc;
-    if(i === paths.length - 1) return acc;
-    return acc + '/' + x;
-  }, '');
 
   const setFinished = React.useCallback((result: Choise2Result) => {
     dispatch({
@@ -59,30 +49,24 @@ const TwoChoise: React.FC<Props> = (props) => {
   }, [se]);
   return(
     <div className='max-w-6xl mx-auto'>
-      {!endInitialize && 
-        <InitialForm
-          title={title}
-          onClickStart={onClickStart}
-        />
-      }
-      {!result.isFinished && endInitialize &&
-        <QuizForm
-          {...props}
-          onFinished={setFinished}
-          soundEffect={se.current}
-        />
-      }
-      {result.isFinished && endInitialize &&
-        <ResultForm {...result} {...props} />
-      }
-      <div className='flex flex-row w-full justify-end'>
-        <Link href={beforePath}>
-          <button
-            className='border hover:bg-yellow-100 rounded-full py-1 px-4 text-2xl focus:outline-none '
-          >
-            戻る
-          </button>
-        </Link>
+      <Header/>
+      <div className='py-16'>
+        {!endInitialize && 
+          <InitialForm
+            title={title}
+            onClickStart={onClickStart}
+          />
+        }
+        {!result.isFinished && endInitialize &&
+          <QuizForm
+            {...props}
+            onFinished={setFinished}
+            soundEffect={se.current}
+          />
+        }
+        {result.isFinished && endInitialize &&
+          <ResultForm {...result} {...props} />
+        }
       </div>
     </div>
   )
