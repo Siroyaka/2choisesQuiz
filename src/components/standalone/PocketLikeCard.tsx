@@ -4,6 +4,8 @@ import Link from 'next/link';
 
 import IPage from 'lib/pageList/interface';
 
+const defaultQuizImage = '/asset/images/quiz_default.jpeg';
+
 interface OwnProps {
 
 }
@@ -42,7 +44,7 @@ const PocketLikeCard: React.FC<Props> = (props) => {
     <article className='pt-2 pb-6 mx-2 my-2 border-b-2'>
       <Link href={href}>
         <a className="block">
-          <img src={imgSrc} />
+          <img className='h-48 w-full object-cover' src={imgSrc ?? defaultQuizImage} />
           <h1 className='text-xl mt-2 font-bold'>{title}</h1>
         </a>
       </Link>
