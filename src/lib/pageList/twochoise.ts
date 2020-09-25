@@ -20,8 +20,8 @@ export const pageData : IPages[] = ([
     summary: '円周率の少数点第1位から順番に答えていくクイズです。100個答えるか間違えた時に終わります。',
   },
   {
-    title: 'テスト問題',
-    href: `${pageRoot}/test`,
+    title: '2択テスト問題',
+    href: `${pageRoot}/testpage`,
     minutesOfQuestion: 1,
     difficulty: 1,
     category: ['2択クイズ'],

@@ -3,7 +3,9 @@ import React from 'react';
 import Link from 'next/link';
 import Head from 'next/head';
 
+import TopMenu from 'components/template/TopMenu';
 import { pageData } from 'lib/pageList/choise_quiz';
+import PocketLikeCard from 'components/standalone/PocketLikeCard';
 
 const HeadItems: React.FC = () => {
   return(
@@ -17,17 +19,13 @@ const Home: React.FC = () => {
   return (
     <React.Fragment>
       <HeadItems />
-      <div className='my-2 mx-4'>
-        {pageData.map(x => (
-          <nav key={'contents-' + x.title}>
-            <Link href={x.href}>
-              <button className='p-4 border hover:bg-blue-300 bg-blue-400 rounded-full focus:outline-none'>
-                {x.title}
-              </button>
-            </Link>
-          </nav>
-        ))}
-      </div>
+      <TopMenu title='多選択クイズ'>
+        <div className='my-2 grid grid-cols-1 md:grid-cols-3 gap-2'>
+          {pageData.map((v, i) => (
+            <PocketLikeCard {...v} key={`contents-${i}`} />
+          ))}
+        </div>
+      </TopMenu>
     </React.Fragment>
   )
 }

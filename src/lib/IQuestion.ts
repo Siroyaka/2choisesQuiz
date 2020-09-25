@@ -21,13 +21,15 @@ export type Quiz<T, TObj> = (obj: TObj) => IQuestion<T>;
 
 // 問題を出力するフォームに必要とされる基本の型
 export interface IQuestionFormProps<T1, T2, TObj> {
-  onFinished: (result: T2) => void,
+  title: string, // タイトル
+  onFinished: (result: T2) => void, // クイズが終了したときに実行される関数
   quiz: Quiz<T1, TObj>, // クイズを作成する関数
   timeLimit?: number, // 1問あたりの制限時間
   captionSpeed?: number, // 問題の文字送りの速さ
   questionInterval?: number, // 問題を答えた後にどのくらいインターバルをあけるか
   countdownSpeed?: number, // カウントダウンのインターバルの長さ
   startCountdown?: number, // 初めにいくつカウントダウンするか
+  buttonSize?: 'small' | 'middle' | 'large',
 }
 
 // 問題を管理するReducerの基本型

@@ -12,8 +12,8 @@ export const pageData : IPages[] = ([
     summary: '1桁の掛け算の正解を4択の中から選ぶクイズです。',
   },
   {
-    title: 'テスト問題',
-    href: `${pageRoot}/test`,
+    title: '多選択テスト問題',
+    href: `${pageRoot}/testpage`,
     minutesOfQuestion: 1,
     difficulty: 1,
     category: ['2～8択クイズ'],

@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Header from './Header';
 import ResultForm from './ResultForm';
 import { ResultFormReducers, resultFormInitialState, QuizResultTypes } from './ResultForm/state';
 import QuizForm, {Props as QuizFormProps} from './QuizForm';
@@ -47,21 +48,27 @@ const TwoChoise: React.FC<Props> = (props) => {
     setEndInitialize(true);
   }, [se]);
   return(
-    <React.Fragment>
-      {!endInitialize && 
-        <InitialForm onClickStart={onClickStart}/>
-      }
-      {!result.isFinished && endInitialize &&
-        <QuizForm
-          {...props}
-          onFinished={setFinished}
-          soundEffect={se.current}
-        />
-      }
-      {result.isFinished && endInitialize &&
-        <ResultForm {...result} {...props} />
-      }
-    </React.Fragment>
+    <div className='max-w-6xl mx-auto'>
+      <Header/>
+      <div className='py-16'>
+        {!endInitialize && 
+          <InitialForm
+            title={title}
+            onClickStart={onClickStart}
+          />
+        }
+        {!result.isFinished && endInitialize &&
+          <QuizForm
+            {...props}
+            onFinished={setFinished}
+            soundEffect={se.current}
+          />
+        }
+        {result.isFinished && endInitialize &&
+          <ResultForm {...result} {...props} />
+        }
+      </div>
+    </div>
   )
 }
 

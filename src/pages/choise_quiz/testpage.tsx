@@ -34,9 +34,10 @@ const TestQuizPage: React.FC<Props> = (props) => {
           quiz={makeTestQuiz}
           captionSpeed={10}
           quizLength={5}
-          timeLimit={10}
+          timeLimit={0}
           countdownSpeed={500}
           notShare
+          buttonSize='small'
         />
       </main>
     </React.Fragment>
