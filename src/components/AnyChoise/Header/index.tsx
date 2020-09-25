@@ -25,13 +25,13 @@ const Header: React.FC<Props> = (props) => {
   return(
     <React.Fragment>
       <header className='w-full fixed top-0 left-0 h-16 border-b-2 bg-white z-50'>
-        <div className='h-full max-w-sm md:max-w-3xl xl:max-w-screen-xl mx-auto flex flex-row items-center px-2 xl:px-6'>
+        <div className='h-full max-w-6xl mx-auto flex flex-row items-center px-2 '>
           <div className='flex flex-row'>
             <Link href={beforePath}>
               <button
-                className='focus:outline-none rounded-full px-1 py-1 mr-3'
+                className='focus:outline-none rounded-full px-1 py-1 mr-3 text-gray-600 hover:text-black'
               >
-                <LeftArrowSvg />
+                <LeftArrowSvg size={32} />
               </button>
             </Link>
           </div>
