@@ -1,16 +1,16 @@
-import NextDocument, { Head, Main, NextScript } from 'next/document';
+import NextDocument, { Html, Head, Main, NextScript } from 'next/document';
 
 class MyDocument extends NextDocument {
   render() {
     return(
-      <html>
+      <Html>
         <Head>
         </Head>
         <body>
           <Main />
           <NextScript />
         </body>
-      </html>
+      </Html>
     )
   }
 }
