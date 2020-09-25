@@ -155,18 +155,19 @@ const QuizForm: React.FC<Props> = (props) => {
   }
 
   const getButtonSize = () => {
+    const choiseLength = getButtonValues().length;
     switch(buttonSize) {
       case 'small': {
-        return 'grid-cols-4 sm:grid-cols-6 lg:grid-cols-8';
+        return 'grid-cols-3 grid-rows-3 sm:grid-cols-5 lg:grid-cols-8';
       }
       case 'middle': {
-        return 'grid-cols-2 sm:grid-cols-4 lg:grid-cols-6';
+        return 'grid-cols-2 grid-rows-4 sm:grid-cols-3 lg:grid-cols-5';
       }
       case 'large': {
-        return 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4';
+        return 'grid-cols-1 grid-rows-8 sm:grid-cols-2 lg:grid-cols-3';
       }
       default: {
-        return 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4';
+        return 'grid-cols-1 grid-rows-8 sm:grid-cols-2 lg:grid-cols-3';
       }
     }
   }
