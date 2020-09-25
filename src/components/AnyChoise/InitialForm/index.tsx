@@ -14,10 +14,10 @@ const InitialForm: React.FC<Props> = (props) => {
   } = props;
 
   return(
-    <section id='question-initial-view' className='flex flex-col items-center mx-4 justfy-center py-32'>
-      <h1 className='text-5xl'>{title}</h1>
-      <div className='h-32'/>
-      <div className='text-xl mb-4'>
+    <section id='question-initial-view' className='flex flex-col items-center mx-4 justfy-center py-16 sm:py-32'>
+      <h1 className='text-3xl sm:text-5xl'>{title}</h1>
+      <div className='sm:h-32 h-16'/>
+      <div className='text-md sm:text-xl mb-4'>
         iPhone、iPadをお使いの人は音なしを選択してください。
       </div>
       <div className='flex flex-row pt-2 items-center justify-center'>
