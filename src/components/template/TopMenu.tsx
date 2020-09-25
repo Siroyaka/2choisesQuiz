@@ -22,12 +22,10 @@ const TopMenu: React.FC<Props> = (props) => {
   const [open, setOpen] = React.useState(false);
 
   const openDrawer = React.useCallback(() => {
-    console.log('open');
     setOpen(true);
   }, []);
 
   const closeDrawer = React.useCallback(() => {
-    console.log('close');
     setOpen(false);
   }, []);
 
