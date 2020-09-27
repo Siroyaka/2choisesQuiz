@@ -6,7 +6,7 @@ import { ResultFormReducers, resultFormInitialState, QuizResultTypes } from './R
 import QuizForm, {Props as QuizFormProps} from './QuizForm';
 import InitialForm from './InitialForm';
 import SoundEffect from 'lib/soundEffect';
-import { Choise2Result } from 'lib/makeQuiz';
+import { ResultData } from 'lib/createQuestion/choiseQuiz';
 import { IQuestionResultFormProps } from 'lib/IQuestion';
 
 type Props = IQuestionResultFormProps & Omit<QuizFormProps, 'onFinished'>;
@@ -20,7 +20,7 @@ const TwoChoise: React.FC<Props> = (props) => {
     title
   } = props;
 
-  const setFinished = React.useCallback((result: Choise2Result) => {
+  const setFinished = React.useCallback((result: ResultData) => {
     dispatch({
       type: QuizResultTypes.VIEWRESULT,
       result,

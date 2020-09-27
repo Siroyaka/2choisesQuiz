@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 import { quizReducer, getInitialState, QuizActionTypes } from './state';
 import QuestionWindow from 'components/standalone/QuestionWindow';
-import { Choise2Result } from 'lib/makeQuiz';
+import { ResultData, ChoiseValue } from 'lib/createQuestion/choiseQuiz';
 import { IQuestionFormProps } from 'lib/IQuestion';
 import SoundEffect from 'lib/soundEffect';
 
@@ -14,7 +14,7 @@ export interface OwnProps {
   wrongWord?: string, // 間違ったときに表示するテキスト
 }
 
-export type Props = IQuestionFormProps<number, Choise2Result, number> & OwnProps;
+export type Props = IQuestionFormProps<ChoiseValue, number, ResultData> & OwnProps;
 
 const QuizForm: React.FC<Props> = (props) => {
   const {
@@ -115,8 +115,8 @@ const QuizForm: React.FC<Props> = (props) => {
     if(!viewChoises) return;
     clearTimeout(timerIdRef.current);
     let se = '';
-    const q = state.quizInfo[state.quizResult.answeredCount].getChoisesValue();
-    if(q[n] === 1) {
+    const choisesValue = state.quizInfo[state.quizResult.answeredCount].getChoisesValue(n);
+    if(choisesValue.value === 1) {
       setAnsweredDisplayText(collectWord ?? '正解！');
       se = 'collect_sound';
     } else {
@@ -145,9 +145,9 @@ const QuizForm: React.FC<Props> = (props) => {
   const getButtonValues = () => {
     if(state.isInitialize) return [];
     if(state.isAnswered) {
-      const answer = state.quizInfo[state.quizResult.answeredCount - 1].getChoisesValue();
-      const collectOrWrong = (n: number) => n === 1 ? '〇' : '×';
-      return answer.map(x => collectOrWrong(x));
+      const quizInfo = state.quizInfo[state.quizResult.answeredCount - 1];
+      const collectOrWrong = (i: number) => quizInfo.getChoisesValue(i).value === 1 ? '〇' : '×';
+      return [...Array(quizInfo.choiseLength)].map((_, i) => collectOrWrong(i));
     }
     if(!viewChoises && (captionSpeed === undefined || captionSpeed > 0)) return [];
     if(state.isSetQuiz) return state.quizInfo[state.quizResult.answeredCount].getChoises();
@@ -155,7 +155,6 @@ const QuizForm: React.FC<Props> = (props) => {
   }
 
   const getButtonSize = () => {
-    const choiseLength = getButtonValues().length;
     switch(buttonSize) {
       case 'small': {
         return 'grid-cols-3 grid-rows-3 sm:grid-cols-5 lg:grid-cols-8';

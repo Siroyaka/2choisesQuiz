@@ -3,9 +3,9 @@ import React from 'react';
 import { QuizActionTypes } from './types';
 import { ActionResultTypes } from './actions';
 import { IQuestionReducerState } from 'lib/IQuestion';
-import { Choise2Result, Auto2ChoiseQuizResult } from 'lib/makeQuiz';
+import { QuestionResult, QuestionInfo, ResultData, ChoiseValue } from 'lib/createQuestion/choiseQuiz';
 
-type State = IQuestionReducerState<number, Choise2Result> & {
+type State = IQuestionReducerState<ChoiseValue, ResultData> & {
   totalLength: number, // 問題数の総量
 };
 
@@ -14,7 +14,7 @@ export const getInitialState = (quizLength: number): State => ({
   isInitialize: true,
   isSetQuiz: false,
   totalLength: quizLength,
-  quizResult: new Auto2ChoiseQuizResult(quizLength),
+  quizResult: new QuestionResult(quizLength),
   quizInfo: [],
 })
 
@@ -25,8 +25,8 @@ const reducer: React.Reducer<State, ActionResultTypes> = (state, action) => {
       newState.isInitialize = false;
       newState.isSetQuiz = false;
       newState.isAnswered = true;
-      const value = newState.quizInfo[action.questionNum].getChoisesValue()[action.answeredValue];
-      newState.quizResult.appendChoiseValue(value, action.answeredValue);
+      const value = newState.quizInfo[action.questionNum].getChoisesValue(action.answeredValue);
+      newState.quizResult.appendChoiseValue(value);
       return newState;
     }
     case QuizActionTypes.TIMEOVER: {
@@ -35,7 +35,7 @@ const reducer: React.Reducer<State, ActionResultTypes> = (state, action) => {
       newState.isSetQuiz = false;
       newState.isAnswered = true;
       const value = newState.quizInfo[action.questionNum].getFailureValue();
-      newState.quizResult.appendChoiseValue(value, -1);
+      newState.quizResult.appendChoiseValue(value);
 
       return newState;
     }

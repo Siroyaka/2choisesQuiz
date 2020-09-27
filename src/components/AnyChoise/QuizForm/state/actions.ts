@@ -1,5 +1,6 @@
 import { QuizActionTypes } from './types';
 import { IQuestion } from 'lib/IQuestion';
+import { ChoiseValue } from 'lib/createQuestion/choiseQuiz';
 
 export const answerQuiz = (questionNum: number, answeredValue: number) => ({
   type: QuizActionTypes.ANSWER as QuizActionTypes.ANSWER,
@@ -20,9 +21,9 @@ export const setInterval = () => ({
   type: QuizActionTypes.INTERVAL as QuizActionTypes.INTERVAL,
 })
 
-export const nextQuestion = (question: IQuestion<number>) => ({
+export const nextQuestion = (question: IQuestion<ChoiseValue>) => ({
   type: QuizActionTypes.NEXTQUESTION as QuizActionTypes.NEXTQUESTION,
-  question: question as IQuestion<number>
+  question: question as IQuestion<ChoiseValue>
 })
 
 export type ActionResultTypes =

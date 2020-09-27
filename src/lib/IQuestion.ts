@@ -1,8 +1,8 @@
 // 問題集計する形式
 export interface IQuestionResult<TIn, TRe> {
   answeredCount: number,
-  appendChoiseValue: (choiseValue: TIn, choiseIndex: number) => void
-  readResult: () => TRe
+  appendChoiseValue: (choiseValue: TIn) => void // IQuestionのT型のオブジェクトを受け取るResultを貯蔵していく
+  readResult: () => TRe // appendChoiseValueで積み重ねた値から結果を出力する
 }
 
 // 問題自体の形式
@@ -11,19 +11,18 @@ export interface IQuestion<T> {
   choiseLength: number, // 選択肢の数
   getQuestion: () => string, // クイズの内容を読み取る
   getChoises: () => string[], // 選択肢の内容を読み取る
-  getExplanation: () => string, // 解説の内容を読み取る
-  getChoisesValue: () => T[] // 選んだ選択肢ごとの影響値
+  getChoisesValue: (index: number) => T // 選んだ選択肢の影響値 = resultに保存される値
   getFailureValue: () => T // 答えることに失敗した場合(制限時間切れなどで)の影響値
 }
 
 // 問題を作成する関数の形式
-export type Quiz<T, TObj> = (obj: TObj) => IQuestion<T>;
+export type Quiz<TChoiseValue, TQuestionSource> = (obj: TQuestionSource) => IQuestion<TChoiseValue>;
 
 // 問題を出力するフォームに必要とされる基本の型
-export interface IQuestionFormProps<T1, T2, TObj> {
+export interface IQuestionFormProps<TChoiseValue, TQuestionSource, TResult> {
   title: string, // タイトル
-  onFinished: (result: T2) => void, // クイズが終了したときに実行される関数
-  quiz: Quiz<T1, TObj>, // クイズを作成する関数
+  onFinished: (result: TResult) => void, // クイズが終了したときに実行される関数
+  quiz: Quiz<TChoiseValue, TQuestionSource>, // クイズを作成する関数
   timeLimit?: number, // 1問あたりの制限時間
   captionSpeed?: number, // 問題の文字送りの速さ
   questionInterval?: number, // 問題を答えた後にどのくらいインターバルをあけるか

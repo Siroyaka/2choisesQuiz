@@ -2,7 +2,7 @@ import React from 'react';
 
 import Head from 'next/head';
 
-import { make2ChoiseTestQuiz } from 'lib/createQuestion/choiseQuiz';
+import { makeTestQuiz } from 'lib/createQuestion/choiseQuiz';
 import QuizComponent from 'components/AnyChoise';
 
 interface OwnProps {
@@ -22,8 +22,8 @@ const HeadItem: React.FC<{title: string}> = (props) => {
   )
 }
 
-const TestQuizPage: React.FC<Props> = (props) => {
-  const title = 'テストクイズ';
+const LikeDqSeedsPage: React.FC<Props> = (props) => {
+  const title = '仲間作成';
   return(
     <React.Fragment>
       <HeadItem title={title}/>
@@ -31,7 +31,7 @@ const TestQuizPage: React.FC<Props> = (props) => {
         <QuizComponent
           title='テストクイズ'
           hashTags={[]}
-          quiz={make2ChoiseTestQuiz}
+          quiz={makeTestQuiz}
           captionSpeed={10}
           quizLength={5}
           timeLimit={10}
@@ -43,4 +43,4 @@ const TestQuizPage: React.FC<Props> = (props) => {
   )
 }
 
-export default TestQuizPage;
+export default LikeDqSeedsPage;

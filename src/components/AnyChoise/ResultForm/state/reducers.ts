@@ -2,7 +2,7 @@ import { Reducer } from 'react';
 
 import { QuizResultTypes } from './types';
 import { ActionTypes } from './actions';
-import { Choise2Result } from 'lib/makeQuiz';
+import { ResultData } from 'lib/createQuestion/choiseQuiz';
 
 export const initialState: State = {
   isFinished: false,
@@ -12,7 +12,7 @@ export const initialState: State = {
   hasWrongValue: false
 }
 
-export type State = Choise2Result & {isFinished: boolean};
+export type State = ResultData & {isFinished: boolean};
 
 const reducer: Reducer<State, ActionTypes> = (state, action) => {
   switch (action.type) {

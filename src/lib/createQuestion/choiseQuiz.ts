@@ -1,14 +1,13 @@
 import { IQuestion, IQuestionResult } from 'lib/IQuestion';
 import { randomRange } from 'lib/Useful';
 
-export class QuestionInfo implements IQuestion<number> {
+export class QuestionInfo implements IQuestion<ChoiseValue> {
   id = '';
   choiseLength = 0;
 
   private choises: string[];
   private quiz: string;
   private choisesValue: number[];
-  private explanation: string;
 
   constructor(id: string, quiz: string, choise: string[], collectIndex: number, explanation?: string) {
     this.id = id;
@@ -16,7 +15,6 @@ export class QuestionInfo implements IQuestion<number> {
     this.choises = choise;
     this.choiseLength = choise.length;
     this.choisesValue = choise.map((_, i) => i === collectIndex ? 1 : 0);
-    this.explanation = explanation ?? '';
   }
 
   getQuestion() {
@@ -25,16 +23,21 @@ export class QuestionInfo implements IQuestion<number> {
   getChoises() {
     return this.choises;
   }
-  getExplanation() {
-    return this.explanation;
-  }
-  getChoisesValue() {
-    return this.choisesValue;
+  getChoisesValue(index: number) {
+    return {
+      i: index,
+      value: this.choisesValue[index]
+    };
   }
   getFailureValue() {
-    return 0;
+    return {
+      i: -1,
+      value: 0
+    };
   }
 }
+
+export type ChoiseValue = {i: number, value: number}
 
 export type ResultData = {
   total: number,
@@ -43,7 +46,7 @@ export type ResultData = {
   hasWrongValue: boolean,
 }
 
-export class QuestionResult implements IQuestionResult<number, ResultData> {
+export class QuestionResult implements IQuestionResult<ChoiseValue, ResultData> {
   private total: number;
   private collect: number;
   private results: number[];
@@ -58,11 +61,11 @@ export class QuestionResult implements IQuestionResult<number, ResultData> {
     this.answeredCount = 0;
   }
 
-  appendChoiseValue(choiseValue: number, choiseIndex: number) {
+  appendChoiseValue(choiseValue: ChoiseValue) {
     this.answeredCount += 1;
-    this.collect += choiseValue;
-    if(choiseValue != 1) this.hasWrongValue = true;
-    this.results.push(choiseIndex);
+    this.collect += choiseValue.value;
+    if(choiseValue.value != 1) this.hasWrongValue = true;
+    this.results.push(choiseValue.i);
   }
 
   readResult() {
@@ -75,7 +78,37 @@ export class QuestionResult implements IQuestionResult<number, ResultData> {
   }
 }
 
-export type Quiz = (questionNumber: number) => IQuestion<number>;
+export type Quiz = (questionNumber: number) => IQuestion<ChoiseValue>;
+
+// 2択のテストクイズを作成する
+export const make2ChoiseTestQuiz: Quiz = (questionNumber) => {
+  const id = (questionNumber) + '_testQuiz';
+  const choiseValues = ['A', 'B'];
+
+  let quiz = '';
+  let answer: 'A' | 'B' = 'A';
+  let collectIndex = 0;
+  const i = Math.round(Math.random());
+  if(i === 1) {
+    answer = 'A';
+    collectIndex = 0;
+    quiz = 'Aが正解の問題です。';
+  } else {
+    answer = 'B';
+    collectIndex = 1;
+    quiz = 'Bが正解の問題です。';
+  }
+
+  const info = new QuestionInfo(
+    id,
+    quiz,
+    choiseValues,
+    collectIndex,
+    `${answer}を選べば正解です。`
+  );
+
+  return info;
+}
 
 // 2択から8択までのランダムなクイズを作成する
 export const makeTestQuiz: Quiz = (questionNumber) => {

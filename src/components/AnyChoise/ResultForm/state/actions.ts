@@ -1,9 +1,9 @@
 import { QuizResultTypes } from './types';
-import { Choise2Result } from 'lib/makeQuiz';
+import { ResultData } from 'lib/createQuestion/choiseQuiz';
 
-export const viewResult = (result: Choise2Result) => ({
+export const viewResult = (result: ResultData) => ({
   type: QuizResultTypes.VIEWRESULT as QuizResultTypes.VIEWRESULT,
-  result,
+  result: result as ResultData,
 });
 
 export const initializeResult = () => ({
