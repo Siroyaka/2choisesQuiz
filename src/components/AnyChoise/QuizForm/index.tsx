@@ -12,6 +12,7 @@ export interface OwnProps {
   wrongStop?: boolean, // 間違ったら終了するか
   collectWord?: string, // 正解したときに表示するテキスト
   wrongWord?: string, // 間違ったときに表示するテキスト
+  buttonSize?: 'small' | 'middle' | 'large',
 }
 
 export type Props = IQuestionFormProps<ChoiseValue, number, ResultData> & OwnProps;
