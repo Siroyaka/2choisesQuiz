@@ -25,7 +25,7 @@ const HeadItem: React.FC<{title: string}> = (props) => {
 const LikeDqSeedsPage: React.FC<Props> = (props) => {
   const title = '仲間作成';
   const doExit = (result: ResultData) => {
-    return result.answeredCount > 10;
+    return result.answeredCount >= 10;
   }
   return(
     <React.Fragment>

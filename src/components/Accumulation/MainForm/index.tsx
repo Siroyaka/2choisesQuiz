@@ -39,7 +39,12 @@ const MainForm: React.FC<Props> = (props) => {
     // 終了条件を確認する
     const quizResult = state.quizResult.readResult();
     if(state.doExit(quizResult)) {
-      onFinished(quizResult);
+      timerIdRef.current = setTimeout(
+        () => {
+          onFinished(quizResult);
+        },
+        questionInterval ?? 1000
+      );
       return;
     };
 

@@ -83,13 +83,13 @@ export const makeTestAccumulations: Question = (questionNumber) => {
   const testSeedValues: SeedValue[] = [
     {
       max: 5,
-      name: '体力',
       min: 1,
+      name: '体力',
     },
     {
       max: 5,
-      name: '精神',
       min: 1,
+      name: '精神',
     },
     {
       max: 3,
