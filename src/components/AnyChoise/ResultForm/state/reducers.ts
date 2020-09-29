@@ -9,7 +9,8 @@ export const initialState: State = {
   total: 0,
   collect: 0,
   allChoises: [],
-  hasWrongValue: false
+  hasWrongValue: false,
+  answeredCount: 0
 }
 
 export type State = ResultData & {isFinished: boolean};

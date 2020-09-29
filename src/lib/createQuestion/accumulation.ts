@@ -1,6 +1,6 @@
-import { IQuestion, IQuestionResult } from 'lib/IQuestion';
+import { IQuestionContents, IAnswerCollector } from 'lib/IQuestion';
 
-export class AccumulationInfo implements IQuestion<NameValue> {
+export class AccumulationInfo implements IQuestionContents<NameValue> {
   id = '';
   choiseLength = 0;
 
@@ -47,7 +47,7 @@ export type ResultData = {
   values: number[],
 }
 
-export class AccumulationResult implements IQuestionResult<NameValue, ResultData> {
+export class AccumulationResult implements IAnswerCollector<NameValue, ResultData> {
   answeredCount: number;
 
   private valueNames: string[];
@@ -75,7 +75,7 @@ export class AccumulationResult implements IQuestionResult<NameValue, ResultData
   }
 }
 
-export type Question = (questionNumber: number) => IQuestion<NameValue>;
+export type Question = (questionNumber: number) => IQuestionContents<NameValue>;
 
 export const makeTestAccumulations: Question = (questionNumber) => {
   const id = `${questionNumber}_testQuiz`;
