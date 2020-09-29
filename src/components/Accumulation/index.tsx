@@ -31,13 +31,14 @@ const Accumulation: React.FC<Props> = (props) => {
   return(
     <div>
       {accumulationViewType.type === AccumulationViewType.Initial &&
-        <div>
+        <article>
+          <h1>初期画面</h1>
           <button
             onClick={switchMain}
           >
             押す
           </button>
-        </div>
+        </article>
       }
       {accumulationViewType.type === AccumulationViewType.Main &&
         <MainForm
@@ -46,8 +47,8 @@ const Accumulation: React.FC<Props> = (props) => {
         />
       }
       {accumulationViewType.type === AccumulationViewType.Result &&
-        <div>
-          結果画面
+        <article>
+          <h1>結果画面</h1>
           {accumulationViewType.result.valueNames.map((x, i) => 
             <div>
               <span>{x}: {accumulationViewType.result.values[i]}</span>
@@ -58,7 +59,7 @@ const Accumulation: React.FC<Props> = (props) => {
           >
             もう一回
           </button>
-        </div>
+        </article>
       }
     </div>
   )
