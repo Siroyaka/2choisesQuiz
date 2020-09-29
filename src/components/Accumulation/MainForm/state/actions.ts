@@ -1,5 +1,5 @@
 import { AccumulationActionTypes } from './types';
-import { AccumulationInfo, NameValue } from 'lib/createQuestion/accumulation';
+import { NameValue } from 'lib/createQuestion/accumulation';
 import { IQuestionContents } from 'lib/IQuestion';
 
 export const answer = (questionNum: number, answeredIndex: number) => ({
