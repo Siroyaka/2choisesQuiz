@@ -2,9 +2,10 @@
 export interface IQuestionContents<T> {
   id: string, // 固有ID
   choiseLength: number, // 選択肢の数
+  type?: 'single' | 'multiple' | 'order',
   getQuestion: () => string, // クイズの内容を読み取る
   getChoises: () => string[], // 選択肢の内容を読み取る
-  getChoisesValue: (index: number) => T // 選んだ選択肢の影響値
+  getChoisesValue: (choise: number[]) => T // 選んだ選択肢の影響値
   getFailureValue: () => T // 答えることに失敗した場合(制限時間切れなどで)の影響値
 }
 

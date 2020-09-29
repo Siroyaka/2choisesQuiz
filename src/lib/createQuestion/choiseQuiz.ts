@@ -23,7 +23,8 @@ export class QuestionInfo implements IQuestionContents<ChoiseValue> {
   getChoises() {
     return this.choises;
   }
-  getChoisesValue(index: number) {
+  getChoisesValue(choise: number[]) {
+    const index = choise[0];
     return {
       i: index,
       value: this.choisesValue[index]

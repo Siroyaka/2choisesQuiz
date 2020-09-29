@@ -24,8 +24,8 @@ export class AccumulationInfo implements IQuestionContents<NameValue> {
     return this.choises;
   }
   
-  getChoisesValue(index: number) {
-    return this.choiseValues[index];
+  getChoisesValue(choise: number[]) {
+    return this.choiseValues[choise[0]];
   }
 
   getFailureValue() {

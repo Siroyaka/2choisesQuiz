@@ -121,7 +121,7 @@ const QuizForm: React.FC<Props> = (props) => {
     if(!viewChoises) return;
     clearTimeout(timerIdRef.current);
     let se = '';
-    const choisesValue = state.quizInfo[state.quizResult.answeredCount].getChoisesValue(n);
+    const choisesValue = state.quizInfo[state.quizResult.answeredCount].getChoisesValue([n]);
     if(choisesValue.value === 1) {
       setAnsweredDisplayText(collectWord ?? '正解！');
       se = 'collect_sound';
@@ -152,7 +152,7 @@ const QuizForm: React.FC<Props> = (props) => {
     if(state.isInitialize) return [];
     if(state.isAnswered) {
       const quizInfo = state.quizInfo[state.quizResult.answeredCount - 1];
-      const collectOrWrong = (i: number) => quizInfo.getChoisesValue(i).value === 1 ? '〇' : '×';
+      const collectOrWrong = (i: number) => quizInfo.getChoisesValue([i]).value === 1 ? '〇' : '×';
       return [...Array(quizInfo.choiseLength)].map((_, i) => collectOrWrong(i));
     }
     if(!viewChoises && (captionSpeed === undefined || captionSpeed > 0)) return [];

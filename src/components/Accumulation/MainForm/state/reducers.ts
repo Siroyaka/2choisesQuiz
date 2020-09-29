@@ -30,7 +30,7 @@ const reducer: Reducer<State, ReturnTypes> = (state, action) => {
       newState.isInitialize = false;
       newState.isSetQuiz = false;
       newState.isAnswered = true;
-      const value = newState.quizInfo[action.questionNum].getChoisesValue(action.answeredIndex);
+      const value = newState.quizInfo[action.questionNum].getChoisesValue([action.answeredIndex]);
       newState.quizResult.appendChoiseValue(value);
       newState.displayValue = `${value.name}が${value.value}上がりました。`;
       return newState;

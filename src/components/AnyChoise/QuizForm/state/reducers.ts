@@ -2,8 +2,8 @@ import React from 'react';
 
 import { QuizActionTypes } from './types';
 import { ActionResultTypes } from './actions';
-import { IQuestionReducerState, IQuestionReducerStateType } from 'lib/IQuestion';
-import { QuestionResult, QuestionInfo, ResultData, ChoiseValue } from 'lib/createQuestion/choiseQuiz';
+import { IQuestionReducerState } from 'lib/IQuestion';
+import { QuestionResult, ResultData, ChoiseValue } from 'lib/createQuestion/choiseQuiz';
 
 type State = IQuestionReducerState<ChoiseValue, ResultData> & {
   totalLength: number, // 問題数の総量
@@ -28,7 +28,7 @@ const reducer: React.Reducer<State, ActionResultTypes> = (state, action) => {
       newState.isInitialize = false;
       newState.isSetQuiz = false;
       newState.isAnswered = true;
-      const value = newState.quizInfo[action.questionNum].getChoisesValue(action.answeredValue);
+      const value = newState.quizInfo[action.questionNum].getChoisesValue([action.answeredValue]);
       newState.quizResult.appendChoiseValue(value);
       return newState;
     }
