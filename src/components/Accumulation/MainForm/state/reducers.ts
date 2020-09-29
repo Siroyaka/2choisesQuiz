@@ -7,7 +7,10 @@ import { AccumulationResult, ResultData, NameValue } from 'lib/createQuestion/ac
 
 type State = IQuestionReducerState<NameValue, ResultData> & {
   doExit: (result: ResultData) => boolean, // 問題の終了を検知する関数
-  displayValue: string
+  displayValue: string,
+  isAnswered: boolean, // 答えた直後の状態であることを示す
+  isSetQuiz: boolean, // クイズをStateに追加した直後の状態であることを示す
+  isInitialize: boolean, // 初期状態であることを示す
 };
 
 export const getInitialState = (doExit: (result: ResultData) => boolean, names: string[], initialValues?: number[]): State => ({
@@ -47,8 +50,7 @@ const reducer: Reducer<State, ReturnTypes> = (state, action) => {
       newState.isInitialize = false;
       newState.isAnswered = false;
       newState.isSetQuiz = true;
-      const results = newState.quizResult.readResult();
-      newState.displayValue = results.valueNames.reduce((acc, x, i) => acc + x + results.values[i] + '\n', '');
+      newState.displayValue = action.question.getQuestion();
       return newState;
     }
     default: {

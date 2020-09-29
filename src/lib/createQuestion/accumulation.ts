@@ -42,9 +42,8 @@ export type NameValue = {
 }
 
 export type ResultData = {
-  answeredCount: number,
-  valueNames: string[],
-  values: number[],
+  readonly answeredCount: number,
+  readonly results: {name: string, value: number}[],
 }
 
 export class AccumulationResult implements IAnswerCollector<NameValue, ResultData> {
@@ -67,18 +66,20 @@ export class AccumulationResult implements IAnswerCollector<NameValue, ResultDat
   }
 
   readResult() {
+    const result = this.valueNames.map((x, i) => ({name: x, value: this.values[i]}));
     return {
       answeredCount: this.answeredCount,
-      valueNames: this.valueNames,
-      values: this.values
+      results: result
     };
   }
 }
 
-export type Question = (questionNumber: number) => IQuestionContents<NameValue>;
+export type QuestionSource = {questionNumber: number, results: ResultData};
 
-export const makeTestAccumulations: Question = (questionNumber) => {
-  const id = `${questionNumber}_testQuiz`;
+export type Question = (source: QuestionSource) => IQuestionContents<NameValue>;
+
+export const makeTestAccumulations: Question = (source) => {
+  const id = `${source.questionNumber}_testQuiz`;
 
   const testSeedValues: SeedValue[] = [
     {
@@ -108,18 +109,13 @@ export const makeTestAccumulations: Question = (questionNumber) => {
     }
   ]
 
-  const testValues = makeRandomAccumulations(testSeedValues)(questionNumber);
-  console.log(testValues);
+  const testValues = makeRandomAccumulations(testSeedValues)(source);
   return testValues;
 }
 
-const defaultGetDisplayTexts = (nameValues: NameValue[]) => {
-  const v = nameValues.reduce((acc, value, index) => {
-    const row = `${value.name}: ${value.value}`;
-    const beforeRow = acc.length > 0 ? acc + '\n' : acc;
-    return beforeRow + row;
-  }, '');
-  return v;
+const defaultGetDisplayTexts = (nameValues: NameValue[], results: ResultData) => {
+  const d = results.results.reduce((acc, x) => acc + `${x.name}: ${x.value} \n`, '')
+  return d;
 }
 
 export type SeedValue = {
@@ -129,8 +125,8 @@ export type SeedValue = {
   viewValue?: string
 }
 
-export const makeRandomAccumulations = (values: SeedValue[], getDisplayTexts?: (NameValues: NameValue[]) => string): Question => (questionNumber) => {
-  const id = `${questionNumber}_accumulation_question`;
+export const makeRandomAccumulations = (values: SeedValue[], getDisplayTexts?: (NameValues: NameValue[], results: ResultData) => string): Question => (source) => {
+  const id = `${source.questionNumber}_accumulation_question`;
 
   const getRandomValue = (max: number, min?: number) => {
     const range = (max + 1) - (min ?? 0);
@@ -142,7 +138,7 @@ export const makeRandomAccumulations = (values: SeedValue[], getDisplayTexts?: (
 
   const info = new AccumulationInfo(
     id,
-    getDisplayTexts ? getDisplayTexts(choiseValues) : defaultGetDisplayTexts(choiseValues),
+    getDisplayTexts ? getDisplayTexts(choiseValues, source.results) : defaultGetDisplayTexts(choiseValues, source.results),
     choises,
     choiseValues
   )

@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer, useRef, useState } from 'react';
 
-import { ResultData, NameValue as ChoiseValue } from 'lib/createQuestion/accumulation';
+import { ResultData, NameValue as ChoiseValue, QuestionSource } from 'lib/createQuestion/accumulation';
 import { IQuestionFormProps } from 'lib/IQuestion';
 import StartCountdown from 'components/standalone/StartCountdown';
 
@@ -10,9 +10,14 @@ interface OwnProps {
   doExit: (result: ResultData) => boolean,
   valueNames: string[],
   initialValues?: number[],
+  timeLimit?: number, // 1問あたりの制限時間
+  captionSpeed?: number, // 問題の文字送りの速さ
+  questionInterval?: number, // 問題を答えた後にどのくらいインターバルをあけるか
+  countdownSpeed?: number, // カウントダウンのインターバルの長さ
+  startCountdown?: number, // 初めにいくつカウントダウンするか
 }
 
-export type Props = OwnProps & IQuestionFormProps<ChoiseValue, number, ResultData>;
+export type Props = OwnProps & IQuestionFormProps<ChoiseValue, QuestionSource, ResultData>;
 
 const MainForm: React.FC<Props> = (props) => {
   const {
@@ -49,7 +54,11 @@ const MainForm: React.FC<Props> = (props) => {
     };
 
     // 次の問題へ
-    const question = quiz(state.quizResult.answeredCount + 1);
+    const source: QuestionSource = {
+      questionNumber: state.quizResult.answeredCount + 1,
+      results: state.quizResult.readResult()
+    }
+    const question = quiz(source);
     timerIdRef.current = setTimeout(
       () => {
         dispatch({
@@ -63,7 +72,11 @@ const MainForm: React.FC<Props> = (props) => {
   }, [state.isAnswered])
 
   const startTimerEnd = React.useCallback(() => {
-    const question = quiz(1);
+    const source: QuestionSource = {
+      questionNumber: 1,
+      results: state.quizResult.readResult()
+    }
+    const question = quiz(source);
     dispatch({
       type: AccumulationActionTypes.NEXT,
       question,

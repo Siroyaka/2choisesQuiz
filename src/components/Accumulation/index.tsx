@@ -2,7 +2,6 @@ import React from 'react';
 
 import MainForm, { Props as MainFormProps } from './MainForm';
 
-import { IQuestionFormProps } from 'lib/IQuestion';
 import SoundEffect from 'lib/soundEffect';
 import { ResultData } from 'lib/createQuestion/accumulation';
 
@@ -49,9 +48,9 @@ const Accumulation: React.FC<Props> = (props) => {
       {accumulationViewType.type === AccumulationViewType.Result &&
         <article>
           <h1>結果画面</h1>
-          {accumulationViewType.result.valueNames.map((x, i) => 
-            <div>
-              <span>{x}: {accumulationViewType.result.values[i]}</span>
+          {accumulationViewType.result.results.map((x) => 
+            <div key={`result-${x.name}-value`}>
+              <span>{x.name}: {x.value}</span>
             </div>
           )}
           <button
