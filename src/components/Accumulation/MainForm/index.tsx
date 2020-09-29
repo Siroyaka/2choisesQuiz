@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useRef, useState } from 'react';
+import React, { useEffect, useReducer, useRef } from 'react';
 
 import { ResultData, NameValue as ChoiseValue, QuestionSource } from 'lib/createQuestion/accumulation';
 import { IQuestionFormProps } from 'lib/IQuestion';
@@ -10,8 +10,6 @@ interface OwnProps {
   doExit: (result: ResultData) => boolean,
   valueNames: string[],
   initialValues?: number[],
-  timeLimit?: number, // 1問あたりの制限時間
-  captionSpeed?: number, // 問題の文字送りの速さ
   questionInterval?: number, // 問題を答えた後にどのくらいインターバルをあけるか
   countdownSpeed?: number, // カウントダウンのインターバルの長さ
   startCountdown?: number, // 初めにいくつカウントダウンするか
@@ -25,8 +23,6 @@ const MainForm: React.FC<Props> = (props) => {
     quiz,
     onFinished,
     questionInterval,
-    timeLimit,
-    captionSpeed,
     countdownSpeed,
     startCountdown,
     doExit,
