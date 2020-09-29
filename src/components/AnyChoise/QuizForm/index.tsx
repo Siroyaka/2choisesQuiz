@@ -13,6 +13,11 @@ export interface OwnProps {
   collectWord?: string, // 正解したときに表示するテキスト
   wrongWord?: string, // 間違ったときに表示するテキスト
   buttonSize?: 'small' | 'middle' | 'large',
+  timeLimit?: number, // 1問あたりの制限時間
+  captionSpeed?: number, // 問題の文字送りの速さ
+  questionInterval?: number, // 問題を答えた後にどのくらいインターバルをあけるか
+  countdownSpeed?: number, // カウントダウンのインターバルの長さ
+  startCountdown?: number, // 初めにいくつカウントダウンするか
 }
 
 export type Props = IQuestionFormProps<ChoiseValue, number, ResultData> & OwnProps;

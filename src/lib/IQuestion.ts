@@ -29,18 +29,10 @@ export interface IQuestionFormProps<TChoiseValue, TQuestionSource, TResult exten
   title: string, // タイトル
   onFinished: (result: TResult) => void, // クイズが終了したときに実行される関数
   quiz: Quiz<TChoiseValue, TQuestionSource>, // クイズを作成する関数
-  timeLimit?: number, // 1問あたりの制限時間
-  captionSpeed?: number, // 問題の文字送りの速さ
-  questionInterval?: number, // 問題を答えた後にどのくらいインターバルをあけるか
-  countdownSpeed?: number, // カウントダウンのインターバルの長さ
-  startCountdown?: number, // 初めにいくつカウントダウンするか
 }
 
 // 問題を管理するReducerの基本型
 export interface IQuestionReducerState<T1, T2 extends IQuestionResult> {
-  isAnswered: boolean, // 答えた直後の状態であることを示す
-  isSetQuiz: boolean, // クイズをStateに追加した直後の状態であることを示す
-  isInitialize: boolean, // 初期状態であることを示す
   quizResult: IAnswerCollector<T1, T2>, // 回答を集積する
   quizInfo: IQuestionContents<T1>[], // 問題について
 }
