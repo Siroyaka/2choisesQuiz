@@ -13,6 +13,7 @@ export interface IAnswerCollector<TIn, TRe extends IQuestionResult> {
   answeredCount: number,
   appendChoiseValue: (choiseValue: TIn) => void // IQuestionのT型のオブジェクトを受け取るResultを貯蔵していく
   readResult: () => TRe // appendChoiseValueで積み重ねた値から結果を出力する
+  getAnsweredChoise?: (index: number) => TIn // 過去に答えた内容を出力する
 }
 
 // 結果の型
@@ -40,7 +41,7 @@ export interface IQuestionReducerState<T1, T2 extends IQuestionResult> {
   isAnswered: boolean, // 答えた直後の状態であることを示す
   isSetQuiz: boolean, // クイズをStateに追加した直後の状態であることを示す
   isInitialize: boolean, // 初期状態であることを示す
-  quizResult: IAnswerCollector<T1, T2>, // 問題に答えた結果
+  quizResult: IAnswerCollector<T1, T2>, // 回答を集積する
   quizInfo: IQuestionContents<T1>[], // 問題について
 }
 
