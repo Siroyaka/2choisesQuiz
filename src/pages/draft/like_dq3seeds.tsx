@@ -2,8 +2,9 @@ import React from 'react';
 
 import Head from 'next/head';
 
-import { makeTestQuiz } from 'lib/createQuestion/choiseQuiz';
-import QuizComponent from 'components/AnyChoise';
+import { makeTestAccumulations } from 'lib/createQuestion/accumulation';
+import QuestionComponent from 'components/Accumulation';
+import { exitOfQuestionCount } from 'lib/Useful';
 
 interface OwnProps {
 
@@ -28,15 +29,12 @@ const LikeDqSeedsPage: React.FC<Props> = (props) => {
     <React.Fragment>
       <HeadItem title={title}/>
       <main className='h-full'>
-        <QuizComponent
-          title='テストクイズ'
-          hashTags={[]}
-          quiz={makeTestQuiz}
-          captionSpeed={10}
-          quizLength={5}
-          timeLimit={10}
-          countdownSpeed={500}
-          notShare
+        <QuestionComponent
+          title='仲間作成'
+          quiz={makeTestAccumulations}
+          valueNames={['体力', '精神', '攻撃力', '防御力', '運']}
+          initialValues={[10, 20, 5, 5, 3]}
+          doExit={exitOfQuestionCount(5)}
         />
       </main>
     </React.Fragment>

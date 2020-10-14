@@ -1,7 +1,7 @@
-import { IQuestion, IQuestionResult } from 'lib/IQuestion';
+import { IQuestionContents, IAnswerCollector } from 'lib/IQuestion';
 import { randomRange } from 'lib/Useful';
 
-export class QuestionInfo implements IQuestion<ChoiseValue> {
+export class QuestionInfo implements IQuestionContents<ChoiseValue> {
   id = '';
   choiseLength = 0;
 
@@ -23,7 +23,8 @@ export class QuestionInfo implements IQuestion<ChoiseValue> {
   getChoises() {
     return this.choises;
   }
-  getChoisesValue(index: number) {
+  getChoisesValue(choise: number[]) {
+    const index = choise[0];
     return {
       i: index,
       value: this.choisesValue[index]
@@ -44,9 +45,10 @@ export type ResultData = {
   collect: number,
   allChoises: number[],
   hasWrongValue: boolean,
+  answeredCount: number,
 }
 
-export class QuestionResult implements IQuestionResult<ChoiseValue, ResultData> {
+export class QuestionResult implements IAnswerCollector<ChoiseValue, ResultData> {
   private total: number;
   private collect: number;
   private results: number[];
@@ -74,11 +76,12 @@ export class QuestionResult implements IQuestionResult<ChoiseValue, ResultData> 
       collect: this.collect,
       allChoises: this.results,
       hasWrongValue: this.hasWrongValue,
+      answeredCount: this.answeredCount,
     }
   }
 }
 
-export type Quiz = (questionNumber: number) => IQuestion<ChoiseValue>;
+export type Quiz = (questionNumber: number) => IQuestionContents<ChoiseValue>;
 
 // 2択のテストクイズを作成する
 export const make2ChoiseTestQuiz: Quiz = (questionNumber) => {

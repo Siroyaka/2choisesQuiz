@@ -3,10 +3,13 @@ import React from 'react';
 import { QuizActionTypes } from './types';
 import { ActionResultTypes } from './actions';
 import { IQuestionReducerState } from 'lib/IQuestion';
-import { QuestionResult, QuestionInfo, ResultData, ChoiseValue } from 'lib/createQuestion/choiseQuiz';
+import { QuestionResult, ResultData, ChoiseValue } from 'lib/createQuestion/choiseQuiz';
 
 type State = IQuestionReducerState<ChoiseValue, ResultData> & {
   totalLength: number, // 問題数の総量
+  isAnswered: boolean, // 答えた直後の状態であることを示す
+  isSetQuiz: boolean, // クイズをStateに追加した直後の状態であることを示す
+  isInitialize: boolean, // 初期状態であることを示す
 };
 
 export const getInitialState = (quizLength: number): State => ({
@@ -25,7 +28,7 @@ const reducer: React.Reducer<State, ActionResultTypes> = (state, action) => {
       newState.isInitialize = false;
       newState.isSetQuiz = false;
       newState.isAnswered = true;
-      const value = newState.quizInfo[action.questionNum].getChoisesValue(action.answeredValue);
+      const value = newState.quizInfo[action.questionNum].getChoisesValue([action.answeredValue]);
       newState.quizResult.appendChoiseValue(value);
       return newState;
     }

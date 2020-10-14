@@ -2,7 +2,6 @@ import React from 'react';
 
 import Header from './Header';
 import ResultForm from './ResultForm';
-import { ResultFormReducers, resultFormInitialState, QuizResultTypes } from './ResultForm/state';
 import QuizForm, {Props as QuizFormProps} from './QuizForm';
 import InitialForm from './InitialForm';
 import SoundEffect from 'lib/soundEffect';
@@ -11,26 +10,25 @@ import { IQuestionResultFormProps } from 'lib/IQuestion';
 
 type Props = IQuestionResultFormProps & Omit<QuizFormProps, 'onFinished'>;
 
-const TwoChoise: React.FC<Props> = (props) => {
-  const [result, dispatch] = React.useReducer(ResultFormReducers, resultFormInitialState);
-  const [endInitialize, setEndInitialize] = React.useState(false);
+enum AnyChoiseFormType {
+  Initial,
+  Quiz,
+  Result,
+}
+
+type AnyChoiseContents = {type: AnyChoiseFormType, result: ResultData}
+
+const AnyChoise: React.FC<Props> = (props) => {
+  const [anyChoiseContents, setAnyChoiseContents] = React.useState<AnyChoiseContents>({type: AnyChoiseFormType.Initial, result: null})
   const se = React.useRef<SoundEffect>();
 
   const {
     title
   } = props;
 
-  const setFinished = React.useCallback((result: ResultData) => {
-    dispatch({
-      type: QuizResultTypes.VIEWRESULT,
-      result,
-    })
-  }, []);
-  React.useEffect(() => {
-    dispatch({
-      type: QuizResultTypes.INITIALIZE
-    });
-  }, []);
+  const startQuiz = React.useCallback(() => setAnyChoiseContents({type: AnyChoiseFormType.Quiz, result: null}), []);
+  const toResult = React.useCallback((result: ResultData) => setAnyChoiseContents({type: AnyChoiseFormType.Result, result: result}), []);
+  const doInitialize = React.useCallback(() => setAnyChoiseContents({type: AnyChoiseFormType.Initial, result: null}), []);
 
   const onClickStart = React.useCallback((flg: boolean) => {
     if(flg) {
@@ -40,36 +38,36 @@ const TwoChoise: React.FC<Props> = (props) => {
       se.current.pushSource(`/asset/sounds/collect_sound.wav`, 'collect_sound');
       se.current.pushSource(`/asset/sounds/wrong_sound.wav`, 'wrong_sound');
       se.current.pushSource(`/asset/sounds/tick_sound.wav`, 'tick_sound');
-      se.current.onload = () => setEndInitialize(true);
+      se.current.onload = startQuiz;
       se.current.load();
       return;
     }
     se.current = null;
-    setEndInitialize(true);
+    startQuiz();
   }, [se]);
   return(
     <div className='max-w-6xl mx-auto'>
       <Header/>
       <div className='py-16'>
-        {!endInitialize && 
+        {anyChoiseContents.type === AnyChoiseFormType.Initial && 
           <InitialForm
             title={title}
             onClickStart={onClickStart}
           />
         }
-        {!result.isFinished && endInitialize &&
+        {anyChoiseContents.type === AnyChoiseFormType.Quiz &&
           <QuizForm
             {...props}
-            onFinished={setFinished}
+            onFinished={toResult}
             soundEffect={se.current}
           />
         }
-        {result.isFinished && endInitialize &&
-          <ResultForm {...result} {...props} />
+        {anyChoiseContents.type === AnyChoiseFormType.Result &&
+          <ResultForm {...anyChoiseContents.result} {...props} doInitialize={doInitialize}/>
         }
       </div>
     </div>
   )
 }
 
-export default TwoChoise;
+export default AnyChoise;

@@ -9,10 +9,14 @@ import {
   TwitterShareButton,
 } from 'react-share';
 
-import { State as ResultFormState } from './state';
+import { ResultData } from 'lib/createQuestion/choiseQuiz';
 import { IQuestionResultFormProps } from 'lib/IQuestion';
 
-type Props = ResultFormState & IQuestionResultFormProps;
+interface OwnProps {
+  doInitialize: () => void
+}
+
+type Props = ResultData & IQuestionResultFormProps & OwnProps;
 
 const ResultForm: React.FC<Props> = (props) => {
   const {
@@ -21,6 +25,7 @@ const ResultForm: React.FC<Props> = (props) => {
     notShare,
     total,
     collect,
+    doInitialize
   } = props;
 
   const router = useRouter();
@@ -33,10 +38,6 @@ const ResultForm: React.FC<Props> = (props) => {
     if(collectAnswersRate < 80) return 'すごい!';
     if(collectAnswersRate < 100) return '素晴らしい!';
     return '満点おめでとう!!!!!!!!!!!!!!';
-  }
-
-  const reload = () => {
-    router.reload();
   }
 
   const resultMessage = `正解数...${total}問中${collect}問!!!`;
@@ -75,7 +76,7 @@ const ResultForm: React.FC<Props> = (props) => {
         }
         <button
           className='mx-2 focus:outline-none border rounded-lg py-2 px-4 text-white bg-blue-400'
-          onClick={reload}
+          onClick={doInitialize}
         >
           もう一度
         </button>
