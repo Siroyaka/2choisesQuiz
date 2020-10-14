@@ -24,9 +24,11 @@ class SoundEffect {
       request.open("GET", url, true);
       request.responseType = "arraybuffer";
       request.onload = () => {
-        this.audioContext.decodeAudioData(request.response).then(
-          (buffer) => resolve(buffer)
-        );
+        this.audioContext.decodeAudioData(request.response, (buffer) => {
+          resolve(buffer);
+        }, (error) => {
+          reject(error);
+        });
       }
       request.onerror = (e) => {
         console.error(`XHR Request error: ${e}`);
