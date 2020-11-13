@@ -49,6 +49,7 @@ const QuizForm: React.FC<Props> = (props) => {
   // 次の問題をセットするセクション
   React.useEffect(() => {
     if(!state.isAnswered) return;
+
     // 答えた問題数が出題予定数に達した場合に終了
     // wrongStop(間違えた場合に終了する)設定の場合には間違えた場合に終了する
     if(state.quizResult.answeredCount >= quizLength || (wrongStop && state.quizResult.readResult().hasWrongValue)) {
